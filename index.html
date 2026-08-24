@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naranpol Mayorista — Directo de fábrica a tu comercio</title>
+<link rel="icon" href="images/logo-naranpol.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#inicio" class="nav__brand">
+      <img src="images/logo-naranpol.png" alt="Naranpol" class="nav__logo">
+    </a>
+
+    <nav class="nav__links" id="navLinks" role="tablist">
+      <a href="#inicio" data-tab="inicio" role="tab" aria-selected="true" aria-controls="inicio" class="is-active">Inicio</a>
+      <a href="#historia" data-tab="historia" role="tab" aria-selected="false" aria-controls="historia">Nosotros</a>
+      <a href="#publico" data-tab="publico" role="tab" aria-selected="false" aria-controls="publico">Para tu negocio</a>
+      <a href="#productos" data-tab="productos" role="tab" aria-selected="false" aria-controls="productos">Productos</a>
+      <span class="nav__soon">Tienda <em>(pronto)</em></span>
+    </nav>
+
+    <div class="nav__actions">
+      <button class="btn btn--ghost" type="button">Ingresar</button>
+      <button class="icon-btn" type="button" aria-label="Carrito">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14.6l.03-.11L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03l3.24-5.88A1 1 0 0019.7 4.6H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.22-.11-.22-.24z"/></svg>
+      </button>
+      <button class="nav__burger" id="navBurger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero tab-panel is-active" id="inicio" role="tabpanel" aria-labelledby="inicio" tabindex="0">
+  <div class="hero__bubbles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero__inner">
+    <p class="eyebrow">Cooperativa santafesina · desde 1948</p>
+    <h1 class="hero__title">Directo de fábrica<br>a tu comercio.</h1>
+    <p class="hero__subtitle">
+      Gaseosas y jugos Naranpol al por mayor para kioscos, almacenes y distribuidores.
+      Pedís online, controlás tu stock y pagás con Mercado Pago.
+    </p>
+    <div class="hero__cta">
+      <button class="btn btn--primary" type="button" data-goto-tab="publico">Quiero ser cliente mayorista</button>
+      <button class="btn btn--outline" type="button" data-goto-tab="productos">Ver catálogo</button>
+    </div>
+  </div>
+  <div class="hero__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,64 C240,10 480,10 720,45 C960,80 1200,80 1440,32 L1440,90 L0,90 Z"></path></svg>
+  </div>
+</section>
+
+<!-- ===== HISTORIA ===== -->
+<section class="historia tab-panel" id="historia" role="tabpanel" aria-labelledby="historia" tabindex="0">
+  <div class="historia__inner">
+    <div class="historia__media" aria-hidden="true">
+      <div class="historia__badge">
+        <strong>+10</strong>
+        <span>años como<br>cooperativa</span>
+      </div>
+    </div>
+    <div class="historia__text">
+      <p class="eyebrow eyebrow--dark">Nuestra historia</p>
+      <h2>Una fábrica que sus propios trabajadores volvieron a poner en marcha.</h2>
+      <p>
+        Naranpol nació en Santa Fe como una de las gaseosas más queridas de la región.
+        Cuando la fábrica cerró sus puertas, un grupo de trabajadores decidió no bajar los
+        brazos: se organizaron en cooperativa y recuperaron la planta para volver a producir.
+      </p>
+      <p>
+        Hoy seguimos elaborando cola, naranja, lima limón, sodas y jugos con la misma
+        receta de siempre — y estamos digitalizando la forma en que le vendemos a
+        kioscos, almacenes y distribuidores de toda la provincia.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CANALES DE VENTA ===== -->
+<section class="publico tab-panel" id="publico" role="tabpanel" aria-labelledby="publico" tabindex="0">
+  <p class="eyebrow eyebrow--center">¿Cómo querés comprar?</p>
+  <h2 class="section-title section-title--center">Tres canales, un mismo Naranpol</h2>
+
+  <div class="publico__grid">
+    <article class="card-publico">
+      <div class="card-publico__icon">🏠</div>
+      <span class="card-publico__tag">Compra directa</span>
+      <h3>Venta Minorista</h3>
+      <p>¿Comprás para tu casa? Elegí tus sabores, pagá con Mercado Pago y recibilo donde estés.</p>
+      <button class="link-cta" type="button">Comprar ahora →</button>
+    </article>
+
+    <article class="card-publico">
+      <div class="card-publico__icon">🏪</div>
+      <span class="card-publico__tag">Compra directa</span>
+      <h3>Venta Mayorista</h3>
+      <p>Kioscos, almacenes y despensas: precios por volumen, catálogo siempre actualizado y stock al día.</p>
+      <button class="link-cta" type="button">Quiero ser mayorista →</button>
+    </article>
+
+    <article class="card-publico card-publico--distribuidor">
+      <div class="card-publico__icon">🚛</div>
+      <span class="card-publico__tag card-publico__tag--contact">A medida</span>
+      <h3>Venta a Distribuidores</h3>
+      <p>¿Manejás grandes volúmenes o una zona de reparto? Contanos tu operación y un asesor arma la propuesta con vos.</p>
+      <button class="link-cta" type="button" data-open-modal="distribuidor">Solicitar contacto →</button>
+    </article>
+  </div>
+</section>
+
+<!-- ===== PRODUCTOS ===== -->
+<section class="productos tab-panel" id="productos" role="tabpanel" aria-labelledby="productos" tabindex="0">
+  <p class="eyebrow eyebrow--center">Catálogo</p>
+  <h2 class="section-title section-title--center">Nuestros sabores</h2>
+  <p class="section-sub">Boceto de catálogo — se reemplaza por fotos reales de producto más adelante.</p>
+
+  <div class="productos__grid">
+    <article class="label-card label-card--cola">
+      <span class="label-card__cap"></span>
+      <h3>Cola</h3>
+      <span>Botella 1,5L y 2L</span>
+    </article>
+    <article class="label-card label-card--naranja">
+      <span class="label-card__cap"></span>
+      <h3>Naranja</h3>
+      <span>Botella 1,5L y 2L</span>
+    </article>
+    <article class="label-card label-card--limon">
+      <span class="label-card__cap"></span>
+      <h3>Lima Limón</h3>
+      <span>Botella 1,5L y 2L</span>
+    </article>
+    <article class="label-card label-card--pomelo">
+      <span class="label-card__cap"></span>
+      <h3>Pomelo</h3>
+      <span>Botella 1,5L y 2L</span>
+    </article>
+    <article class="label-card label-card--jugo">
+      <span class="label-card__cap"></span>
+      <h3>Jugo de Naranja</h3>
+      <span>Botella 1L</span>
+    </article>
+    <article class="label-card label-card--soda">
+      <span class="label-card__cap"></span>
+      <h3>Soda</h3>
+      <span>Sifón 1,5L</span>
+    </article>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <img src="images/logo-naranpol.png" alt="Naranpol" class="footer__logo">
+      <p>Cooperativa de Trabajo Naranpol · Santa Fe, Argentina</p>
+    </div>
+
+    <div class="footer__col">
+      <h4>Contacto</h4>
+      <a href="#">Atención al cliente mayorista</a>
+      <a href="#">Consultá por tu pedido</a>
+      <a href="#">Mail de contacto</a>
+    </div>
+
+    <div class="footer__col">
+      <h4>Legales</h4>
+      <a href="#">Términos y condiciones</a>
+      <a href="#">Política de privacidad</a>
+    </div>
+
+    <div class="footer__col">
+      <h4>Seguinos</h4>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+      </div>
+    </div>
+  </div>
+  <p class="footer__legal">© 2026 Naranpol — Trabajo Final PP2. Todos los derechos reservados.</p>
+</footer>
+
+<!-- ===== MODAL: SOLICITUD DISTRIBUIDORES ===== -->
+<div class="modal" id="modalDistribuidor" aria-hidden="true">
+  <div class="modal__backdrop" data-modal-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal__close" type="button" data-modal-close aria-label="Cerrar">✕</button>
+
+    <div id="modalFormWrap">
+      <p class="eyebrow eyebrow--dark">Venta a distribuidores</p>
+      <h3 id="modalTitle">Contanos sobre tu operación</h3>
+      <p class="modal__sub">
+        Este canal no compra directo desde la web: completá tus datos y un asesor
+        comercial de Naranpol te contacta para armar una propuesta a medida
+        (precios, zona y condiciones de entrega).
+      </p>
+
+      <form id="formDistribuidor" class="modal__form">
+        <label>Empresa / Razón social
+          <input type="text" name="empresa" required>
+        </label>
+        <label>Nombre de contacto
+          <input type="text" name="contacto" required>
+        </label>
+        <div class="modal__form-row">
+          <label>Teléfono
+            <input type="tel" name="telefono" required>
+          </label>
+          <label>Email
+            <input type="email" name="email" required>
+          </label>
+        </div>
+        <label>Zona de distribución
+          <input type="text" name="zona" placeholder="Ej: Santa Fe capital y alrededores">
+        </label>
+        <label>Volumen mensual estimado
+          <select name="volumen" required>
+            <option value="">Seleccioná un rango</option>
+            <option>Menos de 500 unidades</option>
+            <option>500 a 2.000 unidades</option>
+            <option>2.000 a 10.000 unidades</option>
+            <option>Más de 10.000 unidades</option>
+          </select>
+        </label>
+        <label>Contanos más (opcional)
+          <textarea name="mensaje" rows="3"></textarea>
+        </label>
+        <button class="btn btn--primary" type="submit">Enviar solicitud</button>
+      </form>
+    </div>
+
+    <div class="modal__success" id="modalSuccess" hidden>
+      <h3>¡Gracias! Recibimos tu solicitud.</h3>
+      <p>Un asesor de Naranpol se va a comunicar con vos en las próximas 48hs hábiles para avanzar con la propuesta.</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
