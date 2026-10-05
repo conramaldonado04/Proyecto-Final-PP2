@@ -15,6 +15,9 @@ const productoSchema = new mongoose.Schema({
   stock: { type: Number, required: true, min: 0, validate: entero },
   activo: { type: Boolean, default: true },
   pruebaPago: { type: Boolean, default: false },
+  // Agregados para el panel de administración:
+  imagen: { type: String, default: '' },                            // ruta dentro de images/productos/
+  stockReferencia: { type: Number, min: 1, validate: entero },      // stock ideal (100%); alerta al llegar al 20%
 }, { timestamps: true });
 const pedidoSchema = new mongoose.Schema({
   usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },

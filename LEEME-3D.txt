@@ -1,0 +1,55 @@
+NARANPOL — NARANJA Y POMELO 1,5 L
+
+ABRIR LA WEB
+1. Extraé todo el ZIP en una carpeta nueva.
+2. Abrí esa carpeta en VS Code.
+3. Abrí botellas-3d.html con Open with Live Server.
+4. Elegí Naranja o Pomelo. Arrastrá para girar e inclinar.
+No hace falta abrir Blender ni iniciar el backend para esta página.
+La antigua dirección cola-3d.html ahora abre la página nueva.
+La sección de productos también incluye el selector de botellas.
+
+BLENDER
+Con Blender cerrado, ejecutá ABRIR_BOTELLAS_EN_BLENDER.bat.
+Alternativa: Blender > Scripting > Open > blender/crear_saborizadas.py > Run Script.
+Conservá crear_cola.py al lado: contiene funciones compartidas.
+Se crean escenas nuevas y archivos models/blender/naranpol_naranja.blend
+ y models/blender/naranpol_pomelo.blend. La última escena abierta es Pomelo;
+podés elegir Naranja con el selector de escenas de Blender.
+La vista inicial es Sólido para evitar render continuo. Los materiales están
+preparados; F12 solicita un render manual con Eevee. No se usa Cycles.
+Si hay archivos .blend previos, se guardan copias con fecha.
+
+CAMBIOS
+- Geometría más angosta para las referencias de 1,5 L, estrías horizontales,
+  base de cinco apoyos, cuello y anillo de seguridad.
+- Frente y dorso tomados de las fotos aportadas, conservadas sin modificar.
+  La adaptación a la superficie se realiza con coordenadas UV.
+- Líquido amarillo anaranjado y pomelo claro. Nivel móvil con oscilación
+  amortiguada y volumen aproximadamente constante al inclinar.
+- Reflejos de estudio calculados en el material web sin mapas HDRI.
+- Un solo sabor activo; al cambiar se libera el visor anterior.
+- Tope de 30 imágenes/s durante la interacción. Pausa al quedar quieto
+  (aproximadamente 2,4 segundos), fuera de pantalla o con pestaña oculta.
+- 26.624 triángulos por botella; GLB de alrededor de 1 MB por sabor.
+
+ALCANCE Y VALIDACIÓN
+Las medidas son estimadas a partir de fotos con perspectiva, no un escaneo.
+Las etiquetas conservan desenfoque y reflejos de las fotografías; los sectores
+laterales que no aparecen en las fotos llevan color de soporte. No se inventaron
+textos, códigos ni tablas nutricionales. No es una réplica exacta certificada.
+Las nuevas fotos corresponden a Naranja y Pomelo, no a Cola. La cola histórica
+sigue en models y en cola-historica-3d.html, sin atribuirle el envase nuevo.
+Los productos, precios, stock y backend del catálogo no se cambiaron para
+inventar un SKU de 1,5 L. Las botellas se muestran en la vista de productos.
+
+Se verificaron mallas cerradas, normales y UV finitas, carga con GLTFLoader,
+contención y conservación de volumen al inclinar, y pausa del programador.
+También se inspeccionó la proyección de etiquetas mediante una rasterización
+geométrica de control. Eso no sustituye un render de Blender o del navegador.
+No se ejecutó Blender aquí ni se midió el consumo en tu PC.
+
+AJUSTE DE POMELO
+Material amarillo pálido, menos blanco, con transparencia simple del 28%.
+La superficie móvil comparte color y transparencia con la bebida.
+Sin refracción ni pases de render adicionales. Naranja conserva su color.

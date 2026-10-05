@@ -28,6 +28,7 @@
 
         <nav class="nav__links" id="navLinks" role="tablist">
           <a
+            id="tab-inicio"
             href="#inicio"
             data-tab="inicio"
             role="tab"
@@ -35,14 +36,6 @@
             aria-controls="inicio"
             class="is-active"
             >Inicio</a
-          >
-          <a
-            href="#historia"
-            data-tab="historia"
-            role="tab"
-            aria-selected="false"
-            aria-controls="historia"
-            >Nosotros</a
           >
           <a
             href="#publico"
@@ -60,7 +53,6 @@
             aria-controls="productos"
             >Productos</a
           >
-          <span class="nav__soon">Tienda <em>(pronto)</em></span>
         </nav>
 
         <div class="nav__actions">
@@ -80,14 +72,21 @@
       </div>
     </header>
 
+    <div class="tab-panel is-active" id="inicio" role="tabpanel"
+      aria-labelledby="tab-inicio" tabindex="0">
     <!-- ===== HERO ===== -->
-    <section
-      class="hero tab-panel is-active"
-      id="inicio"
-      role="tabpanel"
-      aria-labelledby="inicio"
-      tabindex="0"
-    >
+    <section class="hero">
+      <video
+        class="hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source src="videos/familia.mp4" type="video/mp4" />
+      </video>
       <div class="hero__bubbles" aria-hidden="true">
         <span></span><span></span><span></span><span></span><span></span
         ><span></span><span></span>
@@ -126,16 +125,13 @@
       </div>
     </section>
 
-    <!-- ===== HISTORIA ===== -->
-    <section
-      class="historia tab-panel"
-      id="historia"
-      role="tabpanel"
-      aria-labelledby="historia"
-      tabindex="0"
-    >
+    <!-- ===== HISTORIA: integrada en Inicio ===== -->
+    <section class="historia" id="historia" aria-labelledby="historia-titulo">
       <div class="historia__inner">
-        <div class="historia__media" aria-hidden="true">
+        <div class="historia__media">
+          <img class="historia__foto" src="images/historia-fabrica.jpg"
+            alt="Trabajador junto a la línea de embotellado de Naranpol"
+            loading="lazy" width="800" height="450" />
           <div class="historia__badge">
             <strong>+10</strong>
             <span>años como<br />cooperativa</span>
@@ -143,7 +139,7 @@
         </div>
         <div class="historia__text">
           <p class="eyebrow eyebrow--dark">Nuestra historia</p>
-          <h2>
+          <h2 id="historia-titulo">
             Una fábrica que sus propios trabajadores volvieron a poner en
             marcha.
           </h2>
@@ -153,6 +149,12 @@
             trabajadores decidió no bajar los brazos: se organizaron en
             cooperativa y recuperaron la planta para volver a producir.
           </p>
+        </div>
+      </div>
+      <div class="historia__presente">
+        <div class="historia__text">
+          <p class="eyebrow eyebrow--dark">El sabor de siempre</p>
+          <h2>De nuestra fábrica a toda la provincia.</h2>
           <p>
             Hoy seguimos elaborando cola, naranja, lima limón, sodas y jugos con
             la misma receta de siempre — y estamos digitalizando la forma en que
@@ -160,8 +162,15 @@
             provincia.
           </p>
         </div>
+        <figure class="historia__productos">
+          <img src="images/productos/linea-2250.jpg"
+            alt="Gaseosas Naranpol de cola, naranja y pomelo"
+            loading="lazy" width="600" height="600" />
+          <figcaption>Naranpol · Santa Fe, Argentina</figcaption>
+        </figure>
       </div>
     </section>
+    </div>
 
     <!-- ===== CANALES DE VENTA ===== -->
     <section
@@ -173,23 +182,12 @@
     >
       <p class="eyebrow eyebrow--center">¿Cómo querés comprar?</p>
       <h2 class="section-title section-title--center">
-        Tres canales, un mismo Naranpol
+        Dos formas de hacer crecer tu negocio
       </h2>
 
       <div class="publico__grid">
         <article class="card-publico">
-          <div class="card-publico__icon">🏠</div>
-          <span class="card-publico__tag">Compra directa</span>
-          <h3>Venta Minorista</h3>
-          <p>
-            ¿Comprás para tu casa? Elegí tus sabores, pagá con Mercado Pago y
-            recibilo donde estés.
-          </p>
-          <button class="link-cta" type="button">Comprar ahora →</button>
-        </article>
-
-        <article class="card-publico">
-          <div class="card-publico__icon">🏪</div>
+          <div class="card-publico__icon" aria-hidden="true">🏪</div>
           <span class="card-publico__tag">Compra directa</span>
           <h3>Venta Mayorista</h3>
           <p>
@@ -200,7 +198,7 @@
         </article>
 
         <article class="card-publico card-publico--distribuidor">
-          <div class="card-publico__icon">🚛</div>
+          <div class="card-publico__icon" aria-hidden="true">🚛</div>
           <span class="card-publico__tag card-publico__tag--contact"
             >A medida</span
           >
@@ -390,5 +388,16 @@
     <script src="js/main.js"></script>
     <script src="js/login.js"></script>
     <script src="js/tienda.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js",
+          "three/addons/": "./node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+
+    <script type="module" src="js/tienda-3d.js"></script>
   </body>
 </html>

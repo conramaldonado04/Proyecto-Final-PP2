@@ -59,8 +59,37 @@
   const enviar = form.querySelector('[type="submit"]');
   const mensaje = dialog.querySelector(".registro-mensaje");
 
+  const aviso = document.createElement("div");
+  aviso.className = "login-aviso";
+  aviso.setAttribute("role", "status");
+  aviso.setAttribute("aria-live", "polite");
+  aviso.setAttribute("aria-atomic", "true");
+  document.body.append(aviso);
+  let ocultarAviso;
+  function avisarIngreso() {
+    clearTimeout(ocultarAviso);
+    aviso.textContent = "¡Iniciaste sesión correctamente!";
+    aviso.classList.add("is-visible");
+    ocultarAviso = setTimeout(() => {
+      aviso.classList.remove("is-visible");
+      aviso.textContent = "";
+    }, 4000);
+  }
+
   let usuarioActual = null;
   let procesando = false;
+  let pausaHasta = 0;
+  let temporizador;
+  function actualizarPausa() {
+    const segundos = Math.max(0, Math.ceil((pausaHasta - Date.now()) / 1000));
+    enviar.disabled = procesando || segundos > 0;
+    enviar.textContent = segundos ? `Reintentar en ${segundos}s` : (procesando ? "Ingresando…" : "Ingresar");
+    if (!segundos) {
+      clearInterval(temporizador);
+      if (pausaHasta) mensaje.textContent = "Ya podés volver a intentar.";
+      pausaHasta = 0;
+    }
+  }
   let overflowAnterior = "";
 
   function mostrarUsuario(usuario) {
@@ -115,7 +144,7 @@
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    if (procesando) return;
+    if (procesando || Date.now() < pausaHasta) return;
 
     procesando = true;
     enviar.disabled = true;
@@ -133,6 +162,11 @@
       });
 
       if (!response.ok) {
+        if (response.status === 429 && Number.isFinite(data.reintentarEn)) {
+          pausaHasta = Date.now() + Math.max(1, data.reintentarEn) * 1000;
+          clearInterval(temporizador);
+          temporizador = setInterval(actualizarPausa, 1000);
+        }
         mensaje.textContent = data.mensaje || "No se pudo iniciar sesión.";
         return;
       }
@@ -142,6 +176,7 @@
       form.reset();
 
       if (dialog.open) dialog.close();
+      avisarIngreso();
     } catch {
       mensaje.textContent =
         "No pudimos confirmar el inicio de sesión. Revisá la conexión e intentá nuevamente.";
@@ -151,10 +186,9 @@
       }
     } finally {
       procesando = false;
-      enviar.disabled = false;
-      enviar.textContent = "Ingresar";
+      actualizarPausa();
 
-      if (!dialog.open) form.elements.password.value = "";
+      form.elements.password.value = "";
     }
   });
 

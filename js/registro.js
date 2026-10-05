@@ -13,6 +13,8 @@
       <input id="registroNombre" name="nombre" autocomplete="name" required minlength="2" maxlength="100">
       <label for="registroEmail">Email</label>
       <input id="registroEmail" name="email" type="email" autocomplete="email" required maxlength="254">
+      <label for="registroEmailConfirmar">Volvé a ingresar tu email</label>
+      <input id="registroEmailConfirmar" name="emailConfirmacion" type="email" autocomplete="email" required maxlength="254">
       <label for="registroPassword">Contraseña</label>
       <input id="registroPassword" name="password" type="password" autocomplete="new-password" required minlength="8" aria-describedby="registroAyuda">
       <small id="registroAyuda">Usá al menos 8 caracteres.</small>
@@ -80,10 +82,16 @@
     if (pendiente) return;
     const nombre = form.elements.nombre.value.trim();
     const email = form.elements.email.value.trim().toLowerCase();
+    const emailConfirmacion = form.elements.emailConfirmacion.value.trim().toLowerCase();
     const password = form.elements.password.value;
     mensaje.dataset.estado = 'error';
     if (nombre.length < 2) {
       mensaje.textContent = 'Ingresá un nombre de al menos 2 caracteres.';
+      return;
+    }
+    if (email !== emailConfirmacion) {
+      mensaje.textContent = 'Los emails no coinciden. Revisalos e intentá nuevamente.';
+      form.elements.emailConfirmacion.focus();
       return;
     }
     if (password !== form.elements.confirmar.value) {
@@ -104,7 +112,7 @@
       const response = await fetch('http://127.0.0.1:3000/api/auth/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, password }),
+        body: JSON.stringify({ nombre, email, emailConfirmacion, password }),
         signal: controller.signal,
       });
       const data = await response.json();

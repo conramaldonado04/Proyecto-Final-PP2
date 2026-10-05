@@ -2,6 +2,10 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 
+const { limitarIP, reservarCuenta, reiniciarCuenta, rechazar, auditar } = require("../seguridad/login");
+const { randomBytes } = require("node:crypto");
+// Mismo trabajo bcrypt aunque el email no exista; nunca permite autenticarlo.
+const hashSenuelo = bcrypt.hashSync(randomBytes(32).toString("hex"), 12);
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -20,7 +24,7 @@ function datosPublicos(usuario) {
 
 // REGISTRO
 router.post("/registro", async (req, res) => {
-  const { nombre, email, password } = req.body ?? {};
+  const { nombre, email, emailConfirmacion, password } = req.body ?? {};
 
   if (
     typeof nombre !== "string" ||
@@ -29,6 +33,15 @@ router.post("/registro", async (req, res) => {
   ) {
     return res.status(400).json({
       mensaje: "Completá nombre, email y contraseña.",
+    });
+  }
+
+  if (
+    typeof emailConfirmacion !== "string" ||
+    email.trim().toLowerCase() !== emailConfirmacion.trim().toLowerCase()
+  ) {
+    return res.status(400).json({
+      mensaje: "Los emails no coinciden. Volvé a ingresar tu email.",
     });
   }
 
@@ -75,7 +88,7 @@ router.post("/registro", async (req, res) => {
 });
 
 // INICIAR SESIÓN
-router.post("/login", async (req, res, next) => {
+router.post("/login", limitarIP, async (req, res, next) => {
   const { email, password } = req.body ?? {};
 
   if (
@@ -92,19 +105,23 @@ router.post("/login", async (req, res, next) => {
   }
 
   try {
-    const usuario = await Usuario.findOne({
-      email: email.trim().toLowerCase(),
-    }).select("+passwordHash");
+    const emailNormalizado = email.trim().toLowerCase();
+    const reserva = await reservarCuenta(emailNormalizado);
+    if (reserva.espera) return rechazar(req, res, reserva.espera);
 
-    const coincide = usuario
-      ? await bcrypt.compare(password, usuario.passwordHash)
-      : false;
+    const usuario = await Usuario.findOne({ email: emailNormalizado }).select("+passwordHash");
+    const coincide = await bcrypt.compare(password, usuario?.passwordHash || hashSenuelo);
 
-    if (!coincide) {
+    if (!usuario || !coincide) {
+      auditar(req, "credenciales_invalidas");
+      const espera = Math.ceil((reserva.estado.bloqueo - Date.now()) / 1000);
+      if (espera > 0) return rechazar(req, res, espera);
       return res.status(401).json({
         mensaje: "Email o contraseña incorrectos.",
       });
     }
+
+    await reiniciarCuenta(reserva);
 
     // Crea un identificador nuevo al iniciar sesión.
     req.session.regenerate((error) => {
@@ -115,6 +132,7 @@ router.post("/login", async (req, res, next) => {
       req.session.save((error) => {
         if (error) return next(error);
 
+        auditar(req, "exito");
         res.json({
           mensaje: "Sesión iniciada correctamente.",
           usuario: datosPublicos(usuario),

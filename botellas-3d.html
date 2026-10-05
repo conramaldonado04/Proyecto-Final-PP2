@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Naranpol · Botellas 3D</title>
+  <link rel="stylesheet" href="css/tienda.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;background:#f5f4ef;color:#142d49}
+    main{max-width:1120px;margin:auto;padding:32px 20px}h1{font-size:clamp(28px,5vw,46px);line-height:1.1;letter-spacing:-.04em}
+    .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:#63705f}
+    .tienda-botella{grid-template-columns:1.2fr 1fr;background:#fff;border:1px solid #e5e5de;padding:22px;border-radius:28px}
+    .producto-3d{height:620px;background:radial-gradient(ellipse at 50% 42%,#fff 15%,#e9eef0 100%);position:relative}
+    .producto-3d:before{content:"";position:absolute;left:35%;right:35%;bottom:8%;height:18px;background:#24372d25;filter:blur(10px);border-radius:50%;pointer-events:none}
+    .producto-3d canvas{position:relative}.tienda-botella-texto{padding:16px}select{display:block;width:100%;max-width:260px;padding:12px;margin-top:8px;border:1px solid #bbc6cc;border-radius:10px;background:white;font:inherit;color:inherit}
+    a{color:#164c85}details{margin-top:24px}summary{cursor:pointer}.referencias{display:flex;gap:16px;flex-wrap:wrap}.referencias img{width:240px;max-width:100%;height:auto;border-radius:12px;margin-top:15px}
+    @media(max-width:650px){main{padding:20px 12px}.tienda-botella{grid-template-columns:1fr;padding:12px}.producto-3d{height:470px}}
+  </style>
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body><main>
+  <a href="index.html#productos">← Volver a productos</a>
+  <h1>Conocé tu próximo sabor.</h1>
+  <section class="tienda-botella">
+    <div class="producto-3d" data-modelo="models/naranpol_naranja.glb" data-sabor="Naranja"></div>
+    <div class="tienda-botella-texto">
+      <p class="eyebrow">Agua saborizada · 1,5 litros</p>
+      <h2 data-nombre-botella>Naranpol Naranja</h2>
+      <label>Elegí el sabor<select data-selector-botella><option value="naranja">Naranja</option><option value="pomelo">Pomelo</option></select></label>
+      <p>Giralo, mirá la etiqueta y descubrí cada detalle.</p>
+      <p>Arrastrá hacia los lados para girar. Hacia arriba o abajo para inclinar y mover el líquido.</p>
+      <p>También podés usar las flechas del teclado. ↺ vuelve al frente.</p>
+    </div>
+  </section>
+  <details><summary>Fotos utilizadas como referencia</summary><div class="referencias">
+    <img src="blender/referencias/naranja-frente.jpg" loading="lazy" alt="Botella real de Naranpol Naranja">
+    <img src="blender/referencias/naranja-dorso.jpg" loading="lazy" alt="Etiqueta trasera de Naranja">
+    <img src="blender/referencias/pomelo-frente.jpg" loading="lazy" alt="Etiqueta real de Pomelo">
+    <img src="blender/referencias/pomelo-dorso.jpg" loading="lazy" alt="Etiqueta trasera de Pomelo">
+  </div></details>
+  <noscript>Activá JavaScript para usar la vista 3D.</noscript>
+</main><script type="module" src="js/tienda-3d.js"></script></body>
+</html>
