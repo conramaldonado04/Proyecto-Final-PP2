@@ -256,6 +256,105 @@
   font-size: 14px;
   padding: 10px 14px;
 }
+/* Orden de la barra superior: el nombre y el carrito quedan juntos, a la
+   derecha de todo (carrito en el extremo). Sin sesión: Registrarme, Ingresar. */
+.nav__actions { gap: 10px; flex-wrap: nowrap; }
+.nav__actions .registro-abrir { order: 1; }
+.nav__actions .nav__ingresar { order: 2; }
+.nav__actions .icon-btn { order: 3; background: rgba(22, 59, 115, 0.08); }
+.nav__actions .nav__cuenta-wrap { order: 4; }
+.nav__actions .nav__burger { order: 5; }
+.nav__actions.is-logueado .registro-abrir,
+.nav__actions.is-logueado .nav__ingresar {
+  display: none !important;
+}
+
+/* Enlace "¿No tenés cuenta? Registrarme" dentro del cuadro de ingreso */
+.login-registro {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 15px;
+}
+.login-registro a {
+  color: var(--blue-bright);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.login-registro a:hover { color: var(--blue-deep); }
+
+/* Menú de cuenta: "Hola, Nombre ▾" con Mis pedidos / Panel / Cerrar sesión */
+.nav__cuenta-wrap { position: relative; }
+.nav__cuenta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1.5px solid rgba(22, 59, 115, 0.25);
+  color: var(--blue-deep);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nav__cuenta:hover,
+.nav__cuenta[aria-expanded="true"] {
+  background: rgba(22, 59, 115, 0.08);
+}
+.nav__cuenta-nombre {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav__cuenta-flecha { font-size: 12px; }
+.nav__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  flex-direction: column;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(18, 50, 92, 0.18);
+  z-index: 60;
+}
+.nav__menu.is-open { display: flex; }
+.nav__item {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.nav__item[hidden] { display: none; }
+.nav__item:hover,
+.nav__item:focus-visible {
+  background: var(--cream);
+  color: var(--blue-deep);
+}
+.nav__pedidos { order: 1; }
+.nav__admin { order: 2; }
+.nav__salir {
+  order: 3;
+  margin-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0 0 10px 10px;
+  color: #b3261e;
+}
+@media (max-width: 600px) {
+  .nav__cuenta-nombre { max-width: 90px; }
+}
 .tienda-dialog button:disabled,
 .tienda-card button:disabled {
   opacity: 0.55;

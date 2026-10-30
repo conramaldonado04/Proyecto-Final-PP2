@@ -165,9 +165,11 @@
   carritoBtn.append(contador);
   const pedidosBtn = document.createElement("button");
   pedidosBtn.type = "button";
-  pedidosBtn.className = "btn btn--ghost";
+  pedidosBtn.className = "nav__item nav__pedidos";
   pedidosBtn.textContent = "Mis pedidos";
-  document.querySelector(".nav__actions").append(pedidosBtn);
+  // Van dentro del menú de cuenta que arma login.js (el orden lo define el CSS).
+  const menuCuenta = document.querySelector(".nav__menu");
+  (menuCuenta || document.querySelector(".nav__actions")).append(pedidosBtn);
   const tiendaBtn = document.querySelector(".nav__soon");
   if (tiendaBtn) {
     const boton = document.createElement("button");
@@ -618,7 +620,7 @@
   }
   pedidosBtn.onclick = () => mostrarPedidos(false);
   const adminBtn = document.createElement("button");
-  adminBtn.className = "btn btn--ghost";
+  adminBtn.className = "nav__item nav__admin";
   adminBtn.textContent = "Panel de administración";
   adminBtn.type = "button";
   adminBtn.onclick = () => (location.href = "admin.html");
@@ -642,9 +644,11 @@
       informar("");
     }
     pedidosBtn.hidden = !id;
+    // Con sesión iniciada se ocultan "Registrarme" e "Ingresar" (ver tienda.css).
+    document.querySelector(".nav__actions").classList.toggle("is-logueado", Boolean(id));
     if (usuario?.rol === "admin") {
       if (!adminBtn.isConnected)
-        document.querySelector(".nav__actions").append(adminBtn);
+        (menuCuenta || document.querySelector(".nav__actions")).append(adminBtn);
     } else adminBtn.remove();
     guardar();
   }
@@ -652,19 +656,27 @@
     const revision = ++revisionSesion;
     try {
       const { usuario } = await api("/auth/sesion");
-      if (revision !== revisionSesion) return false;
+      if (revision !== revisionSesion) return undefined; // llegó otra comprobación más nueva
       cambiarUsuario(usuario);
       return Boolean(usuarioCarrito);
     } catch {
-      if (revision === revisionSesion) cambiarUsuario(null);
+      if (revision !== revisionSesion) return undefined;
+      cambiarUsuario(null);
       return false;
     }
   }
   async function exigirSesion() {
-    if (await revisarAdmin()) return true;
-    informar(
-      "Ingresá a tu cuenta para usar tu carrito. Si ya ingresaste, comprobá la conexión con el servidor.",
-    );
+    let haySesion = await revisarAdmin();
+    // Si otra comprobación se cruzó (ej. al volver a enfocar la ventana), se repite una vez
+    // para no tratar a alguien con sesión como si no la tuviera.
+    if (haySesion === undefined) haySesion = await revisarAdmin();
+    if (haySesion) return true;
+    // Sin sesión: se abre directamente el inicio de sesión.
+    if (typeof window.abrirInicioSesion === "function") {
+      window.abrirInicioSesion("Iniciá sesión para continuar con tu pedido.");
+    } else {
+      informar("Ingresá a tu cuenta para usar tu carrito.");
+    }
     return false;
   }
   // Compatibilidad con login.js existente: observar solo respuestas exitosas

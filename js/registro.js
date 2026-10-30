@@ -9,8 +9,21 @@
     <h2 id="registroTitulo">Creá tu cuenta</h2>
     <p class="registro-intro">Registrate con tus datos. La dirección de entrega se completa al hacer el pedido.</p>
     <form class="modal__form" id="formRegistro">
-      <label for="registroNombre">Nombre y apellido</label>
-      <input id="registroNombre" name="nombre" autocomplete="name" required minlength="2" maxlength="100">
+      <div class="modal__form-row">
+        <div>
+          <label for="registroNombre">Nombre</label>
+          <input id="registroNombre" name="nombre" autocomplete="given-name" required minlength="2" maxlength="50">
+        </div>
+        <div>
+          <label for="registroApellido">Apellido</label>
+          <input id="registroApellido" name="apellido" autocomplete="family-name" required minlength="2" maxlength="50">
+        </div>
+      </div>
+      <label for="registroDni">DNI</label>
+      <input id="registroDni" name="dni" inputmode="numeric" autocomplete="off" required maxlength="10" aria-describedby="registroDatosAyuda" placeholder="Solo números">
+      <label for="registroCuit">CUIT / CUIL <span class="registro-opcional">(opcional)</span></label>
+      <input id="registroCuit" name="cuit" inputmode="numeric" autocomplete="off" maxlength="13" aria-describedby="registroDatosAyuda" placeholder="Ej.: 20-12345678-6">
+      <small id="registroDatosAyuda">Usamos estos datos únicamente para emitir tus facturas. Si necesitás factura A, completá el CUIT.</small>
       <label for="registroEmail">Email</label>
       <input id="registroEmail" name="email" type="email" autocomplete="email" required maxlength="254">
       <label for="registroEmailConfirmar">Volvé a ingresar tu email</label>
@@ -28,13 +41,17 @@
   const form = dialog.querySelector('form');
   const mensaje = dialog.querySelector('.registro-mensaje');
   const enviar = form.querySelector('[type="submit"]');
+  // Formato estricto (el servidor además comprueba que el dominio reciba correo).
+  const FORMATO_EMAIL = /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,24}$/;
+  const SOLO_LETRAS = /^\p{L}(?:[\p{L}'’ .-]*\p{L})?$/u;
   let pendiente = false;
   let ultimoBoton;
   let overflowAnterior;
   function abrir(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     if (dialog.open) return;
-    ultimoBoton = event.currentTarget;
+    // Sin evento (se abrió desde el cuadro de ingreso): al cerrar, el foco vuelve a "Ingresar".
+    ultimoBoton = event ? event.currentTarget : document.querySelector('.nav__ingresar');
     if (!pendiente) {
       form.reset();
       form.hidden = false;
@@ -67,6 +84,7 @@
     boton.addEventListener('click', abrir);
     acciones.prepend(boton);
   }
+  window.abrirRegistro = () => abrir();
   dialog.querySelector('.registro-cerrar').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => {
     document.body.style.overflow = overflowAnterior;
@@ -80,13 +98,37 @@
   form.addEventListener('submit', async event => {
     event.preventDefault();
     if (pendiente) return;
-    const nombre = form.elements.nombre.value.trim();
+    const nombre = form.elements.nombre.value.trim().replace(/\s+/g, ' ');
+    const apellido = form.elements.apellido.value.trim().replace(/\s+/g, ' ');
+    const dni = form.elements.dni.value.replace(/[.\s]/g, '');
+    const cuit = form.elements.cuit.value.replace(/[-.\s]/g, '');
     const email = form.elements.email.value.trim().toLowerCase();
     const emailConfirmacion = form.elements.emailConfirmacion.value.trim().toLowerCase();
     const password = form.elements.password.value;
     mensaje.dataset.estado = 'error';
-    if (nombre.length < 2) {
-      mensaje.textContent = 'Ingresá un nombre de al menos 2 caracteres.';
+    if (!SOLO_LETRAS.test(nombre) || nombre.length < 2 || nombre.length > 50) {
+      mensaje.textContent = 'Revisá el nombre: usá solo letras (2 a 50 caracteres).';
+      form.elements.nombre.focus();
+      return;
+    }
+    if (!SOLO_LETRAS.test(apellido) || apellido.length < 2 || apellido.length > 50) {
+      mensaje.textContent = 'Revisá el apellido: usá solo letras (2 a 50 caracteres).';
+      form.elements.apellido.focus();
+      return;
+    }
+    if (!/^\d{7,8}$/.test(dni)) {
+      mensaje.textContent = 'Ingresá un DNI válido de 7 u 8 números, sin puntos.';
+      form.elements.dni.focus();
+      return;
+    }
+    if (cuit && !/^\d{11}$/.test(cuit)) {
+      mensaje.textContent = 'El CUIT/CUIL debe tener 11 números (con o sin guiones).';
+      form.elements.cuit.focus();
+      return;
+    }
+    if (!FORMATO_EMAIL.test(email) || email.length > 254) {
+      mensaje.textContent = 'Ingresá un email válido, por ejemplo nombre@dominio.com.';
+      form.elements.email.focus();
       return;
     }
     if (email !== emailConfirmacion) {
@@ -112,7 +154,7 @@
       const response = await fetch('http://127.0.0.1:3000/api/auth/registro', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, emailConfirmacion, password }),
+        body: JSON.stringify({ nombre, apellido, dni, cuit, email, emailConfirmacion, password }),
         signal: controller.signal,
       });
       const data = await response.json();
