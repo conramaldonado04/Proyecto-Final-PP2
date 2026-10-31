@@ -3,7 +3,8 @@ const burger = document.getElementById("navBurger");
 const navLinks = document.getElementById("navLinks");
 
 burger.addEventListener("click", () => {
-  navLinks.classList.toggle("is-open");
+  const abierto = navLinks.classList.toggle("is-open");
+  burger.setAttribute("aria-expanded", String(abierto));
 });
 
 // ===== Navegación por pestañas (sin scroll entre secciones) =====
@@ -11,6 +12,7 @@ const tabLinks = document.querySelectorAll("[data-tab]");
 const tabPanels = document.querySelectorAll(".tab-panel");
 
 function activateTab(tabId) {
+  if (![...tabPanels].some((panel) => panel.id === tabId)) return;
   tabPanels.forEach((panel) => {
     const isMatch = panel.id === tabId;
     panel.classList.toggle("is-active", isMatch);
@@ -24,6 +26,13 @@ function activateTab(tabId) {
 
   window.scrollTo({ top: 0 });
   navLinks.classList.remove("is-open"); // cierra el menú mobile al elegir
+  burger.setAttribute("aria-expanded", "false");
+  // Volver a Mis pedidos después de la recarga que realiza el inicio de sesión.
+  try {
+    if (tabId === "pedidos") sessionStorage.setItem("naranpol-vista", "pedidos");
+    else sessionStorage.removeItem("naranpol-vista");
+  } catch {}
+  window.dispatchEvent(new CustomEvent("naranpol:tab-cambiado", { detail: { tabId } }));
 }
 
 tabLinks.forEach((link) => {
@@ -35,18 +44,27 @@ tabLinks.forEach((link) => {
 
 // Botones sueltos que también deben cambiar de pestaña (ej. CTAs del hero)
 document.querySelectorAll("[data-goto-tab]").forEach((btn) => {
-  btn.addEventListener("click", () => activateTab(btn.dataset.gotoTab));
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    activateTab(btn.dataset.gotoTab);
+  });
 });
 
 // Pestaña inicial
-activateTab("inicio");
+let vistaInicial = "inicio";
+try {
+  if (sessionStorage.getItem("naranpol-vista") === "pedidos") vistaInicial = "pedidos";
+} catch {}
+activateTab(vistaInicial);
+burger.setAttribute("aria-controls", "navLinks");
+burger.setAttribute("aria-expanded", "false");
 
 // ===== Modal: solicitud de distribuidores =====
 const modal = document.getElementById("modalDistribuidor");
 function actualizarBloqueoScroll() {
   const modalDistribuidorAbierto = modal && modal.classList.contains("is-open");
 
-  const dialogoTiendaAbierto = document.querySelector(".tienda-dialog[open]");
+  const dialogoTiendaAbierto = document.querySelector(".tienda-dialog[open], .aviso-proximamente[open]");
 
   document.body.style.overflow =
     modalDistribuidorAbierto || dialogoTiendaAbierto ? "hidden" : "";
@@ -91,4 +109,29 @@ formDistribuidor.addEventListener("submit", (e) => {
 
   modalFormWrap.hidden = true;
   modalSuccess.hidden = false;
+});
+
+// ===== Avisos del footer =====
+const avisoProximamente = document.getElementById("avisoProximamente");
+let origenAviso;
+document.querySelectorAll("[data-proximamente]").forEach((boton) => {
+  boton.addEventListener("click", () => {
+    origenAviso = boton;
+    document.getElementById("proximamenteContexto").textContent = boton.dataset.proximamente;
+    avisoProximamente.showModal();
+    actualizarBloqueoScroll();
+  });
+});
+avisoProximamente.querySelectorAll("[data-cerrar-aviso]").forEach((boton) => {
+  boton.addEventListener("click", () => avisoProximamente.close());
+});
+avisoProximamente.addEventListener("click", (event) => {
+  const rect = avisoProximamente.getBoundingClientRect();
+  if (event.target === avisoProximamente &&
+      (event.clientX < rect.left || event.clientX > rect.right ||
+       event.clientY < rect.top || event.clientY > rect.bottom)) avisoProximamente.close();
+});
+avisoProximamente.addEventListener("close", () => {
+  actualizarBloqueoScroll();
+  origenAviso?.focus({ preventScroll: true });
 });

@@ -53,6 +53,8 @@
             aria-controls="productos"
             >Productos</a
           >
+          <a id="tab-pedidos" href="#pedidos" data-tab="pedidos"
+            role="tab" aria-selected="false" aria-controls="pedidos">Mis pedidos</a>
         </nav>
 
         <div class="nav__actions">
@@ -263,6 +265,23 @@
       </div>
     </section>
 
+    <!-- ===== PEDIDOS DE LA CUENTA ===== -->
+    <section class="mis-pedidos tab-panel" id="pedidos" role="tabpanel"
+      aria-labelledby="tab-pedidos" tabindex="0">
+      <div class="mis-pedidos__inner">
+        <div class="mis-pedidos__cabecera">
+          <div>
+            <p class="eyebrow eyebrow--dark">Tu cuenta · Naranpol</p>
+            <h1>Mis pedidos</h1>
+            <p>Seguí el estado de tus compras y consultá cada detalle.</p>
+          </div>
+          <button type="button" class="btn btn--outline" id="pedidosActualizar">Actualizar pedidos</button>
+        </div>
+        <p id="pedidosEstado" class="mis-pedidos__estado" role="status"></p>
+        <div id="pedidosLista" class="mis-pedidos__lista"></div>
+      </div>
+    </section>
+
     <!-- ===== FOOTER ===== -->
     <footer class="footer">
       <div class="footer__inner">
@@ -277,15 +296,15 @@
 
         <div class="footer__col">
           <h4>Contacto</h4>
-          <a href="#">Atención al cliente mayorista</a>
-          <a href="#">Consultá por tu pedido</a>
-          <a href="#">Mail de contacto</a>
+          <a href="#publico" data-goto-tab="publico">Atención al cliente mayorista</a>
+          <a href="#pedidos" data-goto-tab="pedidos">Consultá por tu pedido</a>
+          <button type="button" class="footer__link" data-proximamente="Mail de contacto">Mail de contacto</button>
         </div>
 
         <div class="footer__col">
           <h4>Legales</h4>
-          <a href="#">Términos y condiciones</a>
-          <a href="#">Política de privacidad</a>
+          <button type="button" class="footer__link" data-proximamente="Términos y condiciones">Términos y condiciones</button>
+          <button type="button" class="footer__link" data-proximamente="Política de privacidad">Política de privacidad</button>
         </div>
 
         <div class="footer__col">
@@ -300,6 +319,16 @@
         © 2026 Naranpol — Trabajo Final PP2. Todos los derechos reservados.
       </p>
     </footer>
+
+    <dialog class="aviso-proximamente" id="avisoProximamente"
+      aria-labelledby="proximamenteTitulo" aria-describedby="proximamenteDescripcion">
+      <button type="button" class="aviso-proximamente__cerrar" data-cerrar-aviso aria-label="Cerrar aviso">✕</button>
+      <span class="aviso-proximamente__icono" aria-hidden="true">✦</span>
+      <p class="eyebrow eyebrow--dark" id="proximamenteContexto"></p>
+      <h2 id="proximamenteTitulo">Próximamente</h2>
+      <p id="proximamenteDescripcion">Estamos preparando este espacio para vos.</p>
+      <button type="button" class="btn btn--primary" data-cerrar-aviso autofocus>Entendido</button>
+    </dialog>
 
     <!-- ===== MODAL: SOLICITUD DISTRIBUIDORES ===== -->
     <div class="modal" id="modalDistribuidor" aria-hidden="true">
