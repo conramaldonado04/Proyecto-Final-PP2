@@ -841,13 +841,15 @@ img {
   color: var(--orange);
   margin-bottom: 0.9rem;
 }
-.footer__col a {
+.footer__col a,
+.footer__link {
   display: block;
   font-size: 0.9rem;
   margin-bottom: 0.6rem;
   opacity: 0.85;
 }
-.footer__col a:hover {
+.footer__col a:hover,
+.footer__link:hover {
   opacity: 1;
   text-decoration: underline;
 }
@@ -923,4 +925,78 @@ img {
   .footer__social {
     justify-content: center;
   }
+}
+
+/* Avisos y acciones del footer */
+.footer__link {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.footer__link:focus-visible, .footer__col a:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 5px;
+}
+.aviso-proximamente {
+  margin: auto;
+  width: min(450px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 40px 28px 32px;
+  border: 0;
+  border-top: 7px solid var(--orange);
+  border-radius: 24px;
+  background: var(--cream);
+  color: var(--blue-deep);
+  text-align: center;
+  box-shadow: 0 24px 70px #10284840;
+}
+.aviso-proximamente::backdrop { background: #102848aa; }
+.aviso-proximamente__cerrar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  padding: 10px;
+  background: transparent;
+  color: var(--blue-deep);
+}
+.aviso-proximamente__icono {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--orange);
+  font-size: 36px;
+}
+.aviso-proximamente h2 { font-size: clamp(2rem, 8vw, 2.8rem); }
+.aviso-proximamente .eyebrow { margin-bottom: 8px; }
+.aviso-proximamente .btn { margin-top: 24px; }
+.aviso-proximamente :focus-visible { outline: 3px solid var(--blue-deep); outline-offset: 4px; }
+@media (max-width: 640px) {
+  .footer__link { margin-left: auto; margin-right: auto; }
+}
+/* Dejar espacio para la nueva pestaña también en tablets. */
+@media (min-width: 641px) and (max-width: 1050px) {
+  .nav__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.5rem 1.5rem;
+    gap: .9rem;
+    border-bottom: 1px solid #0000000f;
+    display: none;
+  }
+  .nav__links.is-open { display: flex; }
+  .nav__burger { display: flex; }
 }
