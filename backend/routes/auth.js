@@ -2,6 +2,17 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 
+const { limitarIP, reservarCuenta, reiniciarCuenta, rechazar, auditar } = require("../seguridad/login");
+const { randomBytes } = require("node:crypto");
+const { validarEmail } = require("../correo/validar-email");
+const {
+  validarNombrePropio,
+  validarDNI,
+  validarCUIT,
+} = require("../seguridad/validar-datos");
+const { enviarBienvenida } = require("../correo/bienvenida");
+// Mismo trabajo bcrypt aunque el email no exista; nunca permite autenticarlo.
+const hashSenuelo = bcrypt.hashSync(randomBytes(32).toString("hex"), 12);
 const router = express.Router();
 
 router.use((req, res, next) => {
@@ -13,6 +24,7 @@ function datosPublicos(usuario) {
   return {
     id: usuario._id,
     nombre: usuario.nombre,
+    apellido: usuario.apellido || "",
     email: usuario.email,
     rol: usuario.rol,
   };
@@ -20,15 +32,40 @@ function datosPublicos(usuario) {
 
 // REGISTRO
 router.post("/registro", async (req, res) => {
-  const { nombre, email, password } = req.body ?? {};
+  const { nombre, apellido, dni, cuit, email, emailConfirmacion, password } =
+    req.body ?? {};
 
   if (
     typeof nombre !== "string" ||
+    typeof apellido !== "string" ||
+    typeof dni !== "string" ||
     typeof email !== "string" ||
     typeof password !== "string"
   ) {
     return res.status(400).json({
-      mensaje: "Completá nombre, email y contraseña.",
+      mensaje: "Completá nombre, apellido, DNI, email y contraseña.",
+    });
+  }
+
+  // Datos personales (se usarán para facturar).
+  const nombreOk = validarNombrePropio(nombre, "nombre");
+  if (!nombreOk.ok) return res.status(400).json({ mensaje: nombreOk.mensaje });
+
+  const apellidoOk = validarNombrePropio(apellido, "apellido");
+  if (!apellidoOk.ok) return res.status(400).json({ mensaje: apellidoOk.mensaje });
+
+  const dniOk = validarDNI(dni);
+  if (!dniOk.ok) return res.status(400).json({ mensaje: dniOk.mensaje });
+
+  const cuitOk = validarCUIT(typeof cuit === "string" ? cuit : "");
+  if (!cuitOk.ok) return res.status(400).json({ mensaje: cuitOk.mensaje });
+
+  if (
+    typeof emailConfirmacion !== "string" ||
+    email.trim().toLowerCase() !== emailConfirmacion.trim().toLowerCase()
+  ) {
+    return res.status(400).json({
+      mensaje: "Los emails no coinciden. Volvé a ingresar tu email.",
     });
   }
 
@@ -39,15 +76,33 @@ router.post("/registro", async (req, res) => {
     });
   }
 
+  // Formato estricto + el dominio del email existe y recibe correo.
+  const validacionEmail = await validarEmail(email);
+  if (!validacionEmail.ok) {
+    return res.status(400).json({ mensaje: validacionEmail.mensaje });
+  }
+
   try {
     const passwordHash = await bcrypt.hash(password, 12);
 
     const usuario = await Usuario.create({
-      nombre: nombre.trim(),
+      nombre: nombreOk.valor,
+      apellido: apellidoOk.valor,
+      dni: dniOk.valor,
+      ...(cuitOk.valor ? { cuit: cuitOk.valor } : {}),
       email: email.trim().toLowerCase(),
       passwordHash,
       rol: "cliente",
     });
+
+    // El mail de bienvenida no demora ni bloquea el registro: si falla, se registra el error.
+    enviarBienvenida({ nombre: usuario.nombre, email: usuario.email }).catch(
+      (error) =>
+        console.error(
+          "No se pudo enviar el mail de bienvenida:",
+          error.code || error.name,
+        ),
+    );
 
     return res.status(201).json({
       mensaje: "Cliente registrado correctamente.",
@@ -75,7 +130,7 @@ router.post("/registro", async (req, res) => {
 });
 
 // INICIAR SESIÓN
-router.post("/login", async (req, res, next) => {
+router.post("/login", limitarIP, async (req, res, next) => {
   const { email, password } = req.body ?? {};
 
   if (
@@ -92,19 +147,23 @@ router.post("/login", async (req, res, next) => {
   }
 
   try {
-    const usuario = await Usuario.findOne({
-      email: email.trim().toLowerCase(),
-    }).select("+passwordHash");
+    const emailNormalizado = email.trim().toLowerCase();
+    const reserva = await reservarCuenta(emailNormalizado);
+    if (reserva.espera) return rechazar(req, res, reserva.espera);
 
-    const coincide = usuario
-      ? await bcrypt.compare(password, usuario.passwordHash)
-      : false;
+    const usuario = await Usuario.findOne({ email: emailNormalizado }).select("+passwordHash");
+    const coincide = await bcrypt.compare(password, usuario?.passwordHash || hashSenuelo);
 
-    if (!coincide) {
+    if (!usuario || !coincide) {
+      auditar(req, "credenciales_invalidas");
+      const espera = Math.ceil((reserva.estado.bloqueo - Date.now()) / 1000);
+      if (espera > 0) return rechazar(req, res, espera);
       return res.status(401).json({
         mensaje: "Email o contraseña incorrectos.",
       });
     }
+
+    await reiniciarCuenta(reserva);
 
     // Crea un identificador nuevo al iniciar sesión.
     req.session.regenerate((error) => {
@@ -115,6 +174,7 @@ router.post("/login", async (req, res, next) => {
       req.session.save((error) => {
         if (error) return next(error);
 
+        auditar(req, "exito");
         res.json({
           mensaje: "Sesión iniciada correctamente.",
           usuario: datosPublicos(usuario),

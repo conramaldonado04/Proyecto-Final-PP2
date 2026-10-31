@@ -96,6 +96,7 @@ async function iniciarServidor() {
     });
 
     await Usuario.init();
+    await require("./seguridad/login").iniciarLimitesLogin();
 
     const store = MongoStore.create({
       client: mongoose.connection.getClient(),
@@ -123,6 +124,7 @@ async function iniciarServidor() {
 
     app.use("/api/auth", authRoutes);
     await require("./tienda")(app);
+    await require("./admin")(app); // Panel del super usuario (/api/admin)
 
     app.use((error, req, res, next) => {
       console.error("Error de solicitud:", error.name);

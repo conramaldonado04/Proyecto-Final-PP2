@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Administración — Naranpol Mayorista</title>
+    <link rel="icon" href="images/logo-naranpol.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    <header class="adm-top">
+      <a href="index.html" class="adm-marca" title="Volver a la tienda">
+        <img src="images/logo-naranpol.png" alt="Naranpol" />
+        <span>Panel de administración</span>
+      </a>
+      <div class="adm-sesion" id="admSesion" hidden>
+        <span class="adm-usuario"><span class="adm-avatar" id="admAvatar" aria-hidden="true"></span><span id="admUsuario"></span></span>
+        <a class="btn btn--ghost" href="index.html">Ver tienda</a>
+        <button class="btn btn--ghost" id="admSalir" type="button">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <!-- Acceso: se muestra si no hay sesión de administrador -->
+    <main id="admAcceso" class="adm-acceso" hidden>
+      <div class="adm-acceso-foto" aria-hidden="true">
+        <img src="images/admin-acceso.jpg" alt="" />
+        <p>Directo de fábrica<br /><strong>a tu comercio</strong></p>
+      </div>
+      <form id="admLogin" class="adm-login" novalidate>
+        <img src="images/logo-naranpol.png" alt="Naranpol" class="adm-login-logo" />
+        <h1>Ingresá como administrador</h1>
+        <p class="adm-sub">Usá la cuenta que marcaste como admin con <code>crear-admin.js</code>.</p>
+        <div class="adm-campo-form" data-campo="email">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" name="email" type="email" autocomplete="username" maxlength="254" />
+          <p class="adm-msg-campo" id="loginEmail-error"></p>
+        </div>
+        <div class="adm-campo-form" data-campo="password">
+          <label for="loginPass">Contraseña</label>
+          <input id="loginPass" name="password" type="password" autocomplete="current-password" />
+          <p class="adm-msg-campo" id="loginPass-error"></p>
+        </div>
+        <button class="btn btn--primary" type="submit">Ingresar</button>
+        <p class="adm-error" role="alert" id="admLoginError"></p>
+      </form>
+    </main>
+
+    <!-- Panel -->
+    <main id="admPanel" class="adm-panel" hidden>
+      <!-- Alerta de stock bajo: visible en todas las pestañas -->
+      <section class="adm-alerta" id="alertaStock" role="alert" hidden></section>
+
+      <nav class="adm-tabs" role="tablist" aria-label="Secciones">
+        <button role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+        <button role="tab" data-tab="stock" aria-selected="false">Stock <span class="adm-badge adm-badge--rojo" id="badgeStock" hidden></span></button>
+        <button role="tab" data-tab="pedidos" aria-selected="false">Pedidos <span class="adm-badge" id="badgeRevision" hidden></span></button>
+        <button role="tab" data-tab="movimientos" aria-selected="false">Movimientos</button>
+      </nav>
+
+      <!-- RESUMEN -->
+      <section class="adm-seccion" data-seccion="resumen">
+        <div class="adm-hero">
+          <img src="images/productos/surtido-1500.jpg" alt="Botellas Naranpol de naranja y pomelo" />
+          <div>
+            <p class="adm-eyebrow" id="saludoFecha"></p>
+            <h1 id="saludo">Hola</h1>
+            <p class="adm-sub">Esto es lo que pasa hoy en la tienda.</p>
+          </div>
+        </div>
+        <div class="adm-kpis" id="kpis"></div>
+        <div class="adm-grid2">
+          <div class="adm-card">
+            <h2>Pedidos por estado</h2>
+            <div id="resumenEstados"></div>
+          </div>
+          <div class="adm-card">
+            <h2>Stock bajo <small class="adm-sub" id="reglaAlerta"></small></h2>
+            <div id="resumenStockBajo"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STOCK -->
+      <section class="adm-seccion" data-seccion="stock" hidden>
+        <div class="adm-barra">
+          <label class="adm-campo">Buscar<input id="stockBuscar" type="search" placeholder="SKU, nombre o sabor" /></label>
+          <label class="adm-campo">Mostrar
+            <select id="stockFiltro">
+              <option value="activos">Activos</option>
+              <option value="bajos">Stock bajo (≤ 20 %)</option>
+              <option value="baja">Dados de baja</option>
+              <option value="todos">Todos</option>
+            </select>
+          </label>
+          <button class="btn btn--primary" id="nuevoProducto" type="button">+ Nuevo producto</button>
+        </div>
+        <div class="adm-tabla-wrap">
+          <table class="adm-tabla">
+            <thead>
+              <tr><th></th><th>Producto</th><th class="num">Precio</th><th>Stock</th><th>Estado</th><th></th></tr>
+            </thead>
+            <tbody id="stockTabla"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PEDIDOS -->
+      <section class="adm-seccion" data-seccion="pedidos" hidden>
+        <div class="adm-barra">
+          <label class="adm-campo">Estado
+            <select id="pedEstado">
+              <option value="">Todos</option>
+              <option value="pendiente_pago">Pendiente de pago</option>
+              <option value="preparando">Preparando</option>
+              <option value="enviado">Enviado</option>
+              <option value="entregado">Entregado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </label>
+          <label class="adm-campo">Pago
+            <select id="pedPago">
+              <option value="">Todos</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="en_revision">En revisión</option>
+              <option value="pagado">Pagado</option>
+            </select>
+          </label>
+          <label class="adm-campo">Tipo
+            <select id="pedTipo">
+              <option value="">Todos</option>
+              <option value="productos">Con productos</option>
+              <option value="prueba">Pruebas de $200</option>
+            </select>
+          </label>
+          <button class="btn btn--ghost" id="pedActualizar" type="button">Actualizar</button>
+        </div>
+        <div class="adm-tabla-wrap">
+          <table class="adm-tabla">
+            <thead>
+              <tr><th>Pedido</th><th>Fecha</th><th>Cliente</th><th class="num">Total</th><th>Estado</th><th>Pago</th><th></th></tr>
+            </thead>
+            <tbody id="pedTabla"></tbody>
+          </table>
+        </div>
+        <div class="adm-paginacion" id="pedPaginacion"></div>
+      </section>
+
+      <!-- MOVIMIENTOS -->
+      <section class="adm-seccion" data-seccion="movimientos" hidden>
+        <div class="adm-barra">
+          <label class="adm-campo">Filtrar por SKU<input id="movSku" placeholder="Ej.: JUG-NAR-1500-6" /></label>
+          <button class="btn btn--ghost" id="movActualizar" type="button">Actualizar</button>
+        </div>
+        <div class="adm-tabla-wrap">
+          <table class="adm-tabla">
+            <thead>
+              <tr><th>Fecha</th><th>SKU</th><th>Tipo</th><th class="num">Cambio</th><th class="num">Stock</th><th>Motivo</th><th>Usuario</th></tr>
+            </thead>
+            <tbody id="movTabla"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Diálogo reutilizable -->
+    <dialog class="adm-dialog" id="admDialog">
+      <button class="adm-cerrar" type="button" aria-label="Cerrar" data-cerrar>×</button>
+      <div id="admDialogCuerpo"></div>
+    </dialog>
+
+    <p class="adm-toast" id="admToast" role="status"></p>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>

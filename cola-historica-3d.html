@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Naranpol Cola · Revisión 3D</title>
+  <link rel="stylesheet" href="css/tienda.css">
+  <style>
+    * { box-sizing: border-box; } body { margin:0; font:16px/1.55 system-ui,sans-serif; background:#f2f4f7; color:#202c40; }
+    main { max-width:1040px; margin:auto; padding:28px 20px; } h1 { margin:0; font-size:clamp(26px,5vw,42px); letter-spacing:-.04em; }
+    .intro { color:#596475; max-width:70ch; } .eyebrow { text-transform:uppercase; font-size:14px; letter-spacing:.08em; color:#a2282a; }
+    .producto-3d { height:550px; } .tienda-botella { grid-template-columns:1.2fr 1fr; }
+    a { color:#184a86; } details { margin-top:24px; } summary { cursor:pointer; } details img { width:100%; max-width:800px; display:block; margin-top:15px; border-radius:12px; }
+    @media(max-width:600px) { .tienda-botella { grid-template-columns:1fr; } .producto-3d { height:440px; } }
+  </style>
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body><main>
+  <p class="eyebrow">Revisión del modelo</p><h1>Naranpol Cola</h1>
+  <p class="intro">Primera reconstrucción a partir de la fotografía. La forma tiene medidas estimadas y la etiqueta trasera todavía está pendiente.</p>
+  <section class="tienda-botella">
+    <div class="producto-3d" data-modelo="models/naranpol_cola.glb"></div>
+    <div class="tienda-botella-texto"><h2>Probá el movimiento</h2>
+      <p>Arrastrá hacia los lados para girar. Arrastrá hacia arriba o abajo para inclinar la botella y ver cómo se acomoda el líquido.</p>
+      <p>También podés usar las flechas del teclado después de seleccionar la botella. El botón ↺ vuelve al frente.</p>
+      <p><a href="index.html#productos">Ir a la tienda</a></p>
+    </div>
+  </section>
+  <details><summary>Ver la fotografía de referencia</summary><img src="blender/referencias/cola-fabrica.jpg" alt="Fotografía aportada de botellas Naranpol Cola con tapa azul y etiqueta roja en la fábrica"></details>
+  <noscript>Activá JavaScript para ver el modelo interactivo.</noscript>
+</main><script type="module" src="js/tienda-3d.js"></script></body>
+</html>

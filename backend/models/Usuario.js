@@ -9,6 +9,24 @@ const usuarioSchema = new mongoose.Schema(
       minlength: 2,
       maxlength: 100,
     },
+    // Datos para facturar. No son "required" a nivel modelo para no romper las
+    // cuentas creadas antes; el registro los exige (routes/auth.js).
+    apellido: {
+      type: String,
+      trim: true,
+      maxlength: 50,
+      default: "",
+    },
+    dni: {
+      type: String,
+      trim: true,
+      match: /^\d{7,8}$/,
+    },
+    cuit: {
+      type: String,
+      trim: true,
+      match: /^\d{11}$/,
+    },
     email: {
       type: String,
       required: true,

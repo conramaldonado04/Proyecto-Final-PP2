@@ -1,5 +1,8 @@
 // Datos ficticios del TP. Precio en centavos ARS; stock en paquetes.
 module.exports = [
+  // Nuevas presentaciones del TP: valores ficticios, insertados sólo si faltan.
+  { sku: 'JUG-NAR-1500-6', nombre: 'Jugo de naranja', sabor: 'Naranja', presentacion: '6 botellas de 1,5 L', unidades: 6, precioCentavos: 720000, stock: 80 },
+  { sku: 'JUG-POM-1500-6', nombre: 'Jugo de pomelo', sabor: 'Pomelo', presentacion: '6 botellas de 1,5 L', unidades: 6, precioCentavos: 720000, stock: 80 },
   { sku: 'TP-PAGO-200', nombre: 'Prueba de pago real', sabor: 'Prueba', presentacion: 'Sin entrega de productos · sin envío', unidades: 1, precioCentavos: 20000, stock: 100, pruebaPago: true },
   { sku: 'JUG-NAR-6', nombre: 'Jugo de naranja', sabor: 'Naranja', presentacion: '6 botellas de 1 L', unidades: 6, precioCentavos: 720000, stock: 80 },
   { sku: 'JUG-MAN-6', nombre: 'Jugo de manzana', sabor: 'Manzana', presentacion: '6 botellas de 1 L', unidades: 6, precioCentavos: 750000, stock: 60 },
