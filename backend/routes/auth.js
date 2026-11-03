@@ -14,6 +14,7 @@ const { enviarBienvenida } = require("../correo/bienvenida");
 // Mismo trabajo bcrypt aunque el email no exista; nunca permite autenticarlo.
 const hashSenuelo = bcrypt.hashSync(randomBytes(32).toString("hex"), 12);
 const router = express.Router();
+const { validarPerfil } = require('../seguridad/perfil-comercial');
 
 router.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
@@ -27,6 +28,13 @@ function datosPublicos(usuario) {
     apellido: usuario.apellido || "",
     email: usuario.email,
     rol: usuario.rol,
+    tipoCliente: usuario.tipoCliente || null,
+    telefono: usuario.telefono || '',
+    negocio: usuario.negocio || '',
+    domicilioComercial: usuario.domicilioComercial || '',
+    zonaDistribucion: usuario.zonaDistribucion || '',
+    volumenEstimado: usuario.volumenEstimado || '',
+    perfilCompleto: Boolean(usuario.tipoCliente),
   };
 }
 
@@ -46,6 +54,9 @@ router.post("/registro", async (req, res) => {
       mensaje: "Completá nombre, apellido, DNI, email y contraseña.",
     });
   }
+
+  const perfilValidado = validarPerfil(req.body);
+  if (!perfilValidado.ok) return res.status(400).json({ mensaje: perfilValidado.mensaje });
 
   // Datos personales (se usarán para facturar).
   const nombreOk = validarNombrePropio(nombre, "nombre");
@@ -86,6 +97,7 @@ router.post("/registro", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, 12);
 
     const usuario = await Usuario.create({
+      ...perfilValidado.perfil,
       nombre: nombreOk.valor,
       apellido: apellidoOk.valor,
       dni: dniOk.valor,
@@ -218,6 +230,23 @@ router.get("/sesion", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+// Completar una cuenta existente sin cambiar su email, contraseña ni permisos.
+router.post('/perfil-comercial', async (req, res, next) => {
+  if (!req.session?.usuarioId) return res.status(401).json({ mensaje: 'Iniciá sesión para completar tu perfil.' });
+  const validacion = validarPerfil(req.body);
+  if (!validacion.ok) return res.status(400).json({ mensaje: validacion.mensaje });
+  try {
+    // Una vez elegido, el cambio de categoría requiere atención comercial.
+    const usuario = await Usuario.findOneAndUpdate(
+      { _id: req.session.usuarioId, tipoCliente: null },
+      { $set: Object.fromEntries(Object.entries(validacion.perfil).filter(([, v]) => v !== undefined)) },
+      { new: true, runValidators: true }
+    );
+    if (!usuario) return res.status(409).json({ mensaje: 'El perfil ya fue completado o la cuenta no está disponible. Recargá la página.' });
+    res.json({ usuario: datosPublicos(usuario), mensaje: 'Perfil de compra completado.' });
+  } catch (error) { next(error); }
 });
 
 // CERRAR SESIÓN

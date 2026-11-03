@@ -29,8 +29,17 @@
   aviso.className = "tienda-aviso";
   aviso.setAttribute("role", "status");
   document.body.append(aviso);
+  let temporizadorAviso;
+
   const informar = (texto) => {
+    clearTimeout(temporizadorAviso);
     aviso.textContent = texto;
+
+    if (texto) {
+      temporizadorAviso = setTimeout(() => {
+        aviso.textContent = "";
+      }, 4500);
+    }
   };
   let usuarioCarrito = null;
   let revisionSesion = 0;
@@ -194,17 +203,30 @@
 
   // Sólo estas dos presentaciones tienen botella y compra en el catálogo actual.
   const tarjetas3D = {
-    'JUG-NAR-1500-6': { modelo: 'models/naranpol_naranja.glb', descripcion: 'Jugo de naranja Naranpol. Agua saborizada sabor naranja en botella de 1,5 litros. Paquete de 6 botellas.' },
-    'JUG-POM-1500-6': { modelo: 'models/naranpol_pomelo.glb', descripcion: 'Jugo de pomelo Naranpol. Agua saborizada sabor pomelo en botella de 1,5 litros. Paquete de 6 botellas.' },
+    "JUG-NAR-1500-6": {
+      modelo: "models/naranpol_naranja.glb",
+      descripcion:
+        "Jugo de naranja Naranpol. Agua saborizada sabor naranja en botella de 1,5 litros. Paquete de 6 botellas.",
+    },
+    "JUG-POM-1500-6": {
+      modelo: "models/naranpol_pomelo.glb",
+      descripcion:
+        "Jugo de pomelo Naranpol. Agua saborizada sabor pomelo en botella de 1,5 litros. Paquete de 6 botellas.",
+    },
   };
   // Se muestran los productos con botella 3D y los cargados desde el panel admin con imagen.
   const seMuestra = (p) => Boolean(tarjetas3D[p.sku] || p.imagen);
   // Stock bajo = 20 % o menos del stock ideal que definió el administrador.
-  const quedanPocos = (p) => p.stock > 0 && p.stockReferencia > 0 && p.stock * 100 <= p.stockReferencia * 20;
+  const quedanPocos = (p) =>
+    p.stock > 0 &&
+    p.stockReferencia > 0 &&
+    p.stock * 100 <= p.stockReferencia * 20;
   const textoStock = (p) =>
-    p.stock < 1 ? "Sin stock"
-      : quedanPocos(p) ? `<span class="tienda-pocos">¡Últimos ${esc(p.stock)} paquetes!</span>`
-      : esc(p.stock) + " paquetes disponibles";
+    p.stock < 1
+      ? "Sin stock"
+      : quedanPocos(p)
+        ? `<span class="tienda-pocos">¡Últimos ${esc(p.stock)} paquetes!</span>`
+        : esc(p.stock) + " paquetes disponibles";
   function tarjetaConImagen(p) {
     return `
       <article class="tienda-card tienda-card-foto">
@@ -221,12 +243,15 @@
     const texto = buscar.value.trim().toLowerCase();
     const lista = productos.filter(
       (p) =>
-        seMuestra(p) && (!sabor.value || p.sabor === sabor.value) &&
+        seMuestra(p) &&
+        (!sabor.value || p.sabor === sabor.value) &&
         `${p.nombre} ${p.presentacion}`.toLowerCase().includes(texto),
     );
     panel.querySelector(".tienda-grid").innerHTML = lista
-      .map(
-        (p) => !tarjetas3D[p.sku] ? tarjetaConImagen(p) : `
+      .map((p) =>
+        !tarjetas3D[p.sku]
+          ? tarjetaConImagen(p)
+          : `
       <article class="tienda-card tienda-card-botella">
         <div class="producto-3d" data-modelo="${tarjetas3D[p.sku].modelo}" data-sabor="${esc(p.sabor)}" aria-label="Botella movible de ${esc(p.nombre)}"></div>
         <p class="tienda-card-ayuda">Arrastrá la botella para girarla e inclinarla.</p>
@@ -244,7 +269,9 @@
     window.dispatchEvent(new CustomEvent("naranpol:catalogo-renderizado"));
     estado.textContent = lista.length
       ? ""
-      : productos.some(seMuestra) ? "No encontramos productos con esa búsqueda." : "Faltan las nuevas presentaciones. Reiniciá el backend actualizado y presioná Actualizar.";
+      : productos.some(seMuestra)
+        ? "No encontramos productos con esa búsqueda."
+        : "Faltan las nuevas presentaciones. Reiniciá el backend actualizado y presioná Actualizar.";
   }
   async function cargarCatalogo() {
     if (cargando) return;
@@ -292,7 +319,29 @@
     }
     carrito[p.sku] = (carrito[p.sku] || 0) + 1;
     guardar();
-    informar(`${p.nombre}: agregado al carrito.`);
+    informar(`✓ ${p.nombre} agregado al carrito`);
+
+    carritoBtn.classList.remove("carrito-agregado");
+    void carritoBtn.offsetWidth;
+    carritoBtn.classList.add("carrito-agregado");
+
+    const botonAgregado = panel.querySelector(`[data-agregar="${p.sku}"]`);
+
+    if (botonAgregado) {
+      // Conserva el texto original incluso con clics repetidos.
+      if (!botonAgregado.dataset.textoOriginal) {
+        botonAgregado.dataset.textoOriginal = botonAgregado.textContent;
+      }
+
+      clearTimeout(botonAgregado._restaurarTexto);
+      botonAgregado.textContent = "✓ Agregado al carrito";
+      botonAgregado.classList.add("producto-agregado");
+
+      botonAgregado._restaurarTexto = setTimeout(() => {
+        botonAgregado.textContent = botonAgregado.dataset.textoOriginal;
+        botonAgregado.classList.remove("producto-agregado");
+      }, 1500);
+    }
   });
   function resumen() {
     const items = Object.entries(carrito).map(([sku, cantidad]) => ({
@@ -375,6 +424,16 @@
         r.items.some((i) => !i.producto || i.cantidad > i.producto.stock)
       ) {
         informar("Actualizá el carrito: hay productos sin stock.");
+        return;
+      }
+      if (!r.prueba && usuario.rol !== 'admin' && !usuario.tipoCliente) {
+        cartDialog.close();
+        window.completarPerfilCompra?.(usuario);
+        return;
+      }
+      const packs = r.items.reduce((total, item) => total + item.cantidad, 0);
+      if (!r.prueba && usuario.rol !== 'admin' && usuario.tipoCliente === 'minorista' && packs < 1) {
+        informar("La compra mínima es de 1 pack de 6 botellas.");
         return;
       }
       cartDialog.close();
@@ -619,6 +678,133 @@
     }
   }
   pedidosBtn.onclick = () => mostrarPedidos(false);
+  const seccionPedidos = document.getElementById("pedidos");
+  const listaPedidos = document.getElementById("pedidosLista");
+  const mensajePedidos = document.getElementById("pedidosEstado");
+  const actualizarPedidos = document.getElementById("pedidosActualizar");
+  let revisionPedidos = 0;
+
+  async function cargarMisPedidos() {
+    const revision = ++revisionPedidos;
+    listaPedidos.replaceChildren();
+    mensajePedidos.textContent = "Cargando tus pedidos…";
+    actualizarPedidos.disabled = true;
+
+    try {
+      const { usuario } = await api("/auth/sesion");
+      const { pedidos } = await api("/tienda/pedidos");
+
+      // Descarta respuestas anteriores o de otra cuenta.
+      const sesion = await api("/auth/sesion");
+      if (revision !== revisionPedidos) return;
+      if (sesion.usuario.id !== usuario.id) {
+        mensajePedidos.textContent =
+          "La cuenta cambió. Volvé a actualizar tus pedidos.";
+        return;
+      }
+
+      mensajePedidos.textContent = "";
+
+      if (!pedidos.length) {
+        listaPedidos.innerHTML = `
+        <div class="mis-pedidos__vacio">
+          <h2>Todavía no hiciste pedidos</h2>
+          <p>Elegí tus sabores favoritos para empezar.</p>
+          <button type="button" class="btn btn--primary"
+            id="primerPedido">Hacer mi primer pedido</button>
+        </div>`;
+
+        document.getElementById("primerPedido").onclick = () =>
+          activateTab("productos");
+        return;
+      }
+
+      const estados = {
+        pendiente_pago: "Pendiente de pago",
+        preparando: "Preparando",
+        enviado: "Enviado",
+        entregado: "Entregado",
+        cancelado: "Cancelado",
+      };
+
+      listaPedidos.innerHTML = pedidos
+        .map(
+          (pedido) => `
+      <article class="tienda-pedido">
+        <strong>
+          Pedido #${esc(pedido.id.slice(-8).toUpperCase())}
+        </strong>
+        <p>${esc(new Date(pedido.createdAt).toLocaleString("es-AR"))}</p>
+      <p>
+  <span class="pedido-estado"
+    data-estado="${esc(pedido.estado)}">
+    ${esc(estados[pedido.estado] || pedido.estado)}
+  </span>
+</p>
+        <p><strong>Pago:</strong> ${esc(estadoPago(pedido))}</p>
+        <ul>
+          ${pedido.items
+            .map(
+              (item) => `
+            <li>${esc(item.cantidad)} × ${esc(item.nombre)}
+              · ${esc(item.presentacion)}</li>
+          `,
+            )
+            .join("")}
+        </ul>
+        <p class="tienda-precio">${moneda(pedido.totalCentavos)}</p>
+        <button type="button" class="btn btn--outline"
+          data-detalle-pedido="${esc(pedido.id)}">Ver detalle</button>
+      </article>
+    `,
+        )
+        .join("");
+
+      listaPedidos.onclick = (event) => {
+        const boton = event.target.closest("[data-detalle-pedido]");
+        if (!boton) return;
+        const pedido = pedidos.find(
+          (p) => p.id === boton.dataset.detallePedido,
+        );
+        if (pedido) verPedido(pedido);
+      };
+    } catch (error) {
+      if (revision !== revisionPedidos) return;
+      listaPedidos.replaceChildren();
+
+      if (error.status === 401) {
+        mensajePedidos.textContent = "";
+        activateTab("inicio");
+        window.abrirInicioSesion?.("Iniciá sesión para consultar tus pedidos.");
+      } else {
+        mensajePedidos.textContent = errorVisible(error);
+      }
+    } finally {
+      if (revision === revisionPedidos) {
+        actualizarPedidos.disabled = false;
+      }
+    }
+  }
+
+  actualizarPedidos.onclick = cargarMisPedidos;
+
+  // El menú de cuenta abre la misma pestaña.
+  pedidosBtn.onclick = () => activateTab("pedidos");
+
+  window.addEventListener("naranpol:tab-cambiado", (event) => {
+    if (event.detail.tabId === "pedidos") cargarMisPedidos();
+  });
+
+  // Actualiza el listado al cerrar el detalle, por ejemplo tras cancelar.
+  pagoDialog.addEventListener("close", () => {
+    if (seccionPedidos.classList.contains("is-active")) {
+      cargarMisPedidos();
+    }
+  });
+
+  if (seccionPedidos.classList.contains("is-active")) {
+    cargarMisPedidos();
+  }
   const adminBtn = document.createElement("button");
   adminBtn.className = "nav__item nav__admin";
   adminBtn.textContent = "Panel de administración";
@@ -645,10 +831,14 @@
     }
     pedidosBtn.hidden = !id;
     // Con sesión iniciada se ocultan "Registrarme" e "Ingresar" (ver tienda.css).
-    document.querySelector(".nav__actions").classList.toggle("is-logueado", Boolean(id));
+    document
+      .querySelector(".nav__actions")
+      .classList.toggle("is-logueado", Boolean(id));
     if (usuario?.rol === "admin") {
       if (!adminBtn.isConnected)
-        (menuCuenta || document.querySelector(".nav__actions")).append(adminBtn);
+        (menuCuenta || document.querySelector(".nav__actions")).append(
+          adminBtn,
+        );
     } else adminBtn.remove();
     guardar();
   }

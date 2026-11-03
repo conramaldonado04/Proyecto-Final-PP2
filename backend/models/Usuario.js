@@ -27,6 +27,12 @@ const usuarioSchema = new mongoose.Schema(
       trim: true,
       match: /^\d{11}$/,
     },
+    tipoCliente: { type: String, enum: ["minorista", "mayorista", "distribuidor"] },
+    telefono: { type: String, trim: true, maxlength: 30 },
+    negocio: { type: String, trim: true, maxlength: 120 },
+    domicilioComercial: { type: String, trim: true, maxlength: 200 },
+    zonaDistribucion: { type: String, trim: true, maxlength: 120 },
+    volumenEstimado: { type: String, trim: true, maxlength: 80 },
     email: {
       type: String,
       required: true,

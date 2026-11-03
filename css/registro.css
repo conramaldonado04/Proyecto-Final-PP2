@@ -56,3 +56,11 @@
 @media (prefers-reduced-motion: reduce) {
   .login-aviso { transition: none; }
 }
+
+/* Un mismo registro adaptado al perfil elegido. */
+.registro-dialog #registroTipo { background: #fff1cc; border: 2px solid #eda309; font-weight: 700; }
+.registro-dialog .modal__form select { width: 100%; min-height: 46px; padding: 10px 12px; border-radius: 10px; color: #163b73; border: 1px solid #b8c8df; font: inherit; }
+.registro-dialog fieldset { min-width: 0; display: grid; gap: 8px; margin: 12px 0; padding: 16px; border: 1px solid #e8b955; border-radius: 14px; background: #fff9ec; }
+.registro-dialog legend { padding: 0 6px; font-weight: 800; }
+.registro-tipo-ayuda { padding: 12px; border-radius: 10px; background: #edf4ff; color: #163b73; font-size: .9rem; line-height: 1.5; }
+.registro-dialog .registro-mensaje .btn { margin-top: 16px; }

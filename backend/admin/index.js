@@ -285,6 +285,15 @@ module.exports = async function instalarAdmin(app) {
   router.get('/pedidos', envolver(async (req, res) => {
     const filtro = {};
     const { estado, pago, tipo } = req.query;
+    if (req.query.id !== undefined) {
+      if (typeof req.query.id !== 'string') fallo('Ingresá un ID de pedido válido.');
+      const id = req.query.id.trim().replace(/^#/, '').toLowerCase();
+      if (!/^(?:[a-f0-9]{8}|[a-f0-9]{24})$/.test(id)) {
+        fallo('Ingresá los 8 caracteres del código del pedido o su ID completo de 24 caracteres.');
+      }
+      if (id.length === 24) filtro._id = new mongoose.Types.ObjectId(id);
+      else filtro.$expr = { $eq: [{ $substrBytes: [{ $toString: '$_id' }, 16, 8] }, id] };
+    }
     if (typeof estado === 'string' && estado) filtro.estado = estado;
     if (typeof pago === 'string' && pago) filtro.pago = pago;
     if (tipo === 'prueba') filtro.pruebaPago = true;

@@ -644,6 +644,8 @@
   let pagina = 1;
   async function cargarPedidos() {
     const params = new URLSearchParams({ pagina });
+    const idPedido = $("#pedBuscarId").value.trim().replace(/^#/, "");
+    if (idPedido) params.set("id", idPedido);
     if ($("#pedEstado").value) params.set("estado", $("#pedEstado").value);
     if ($("#pedPago").value) params.set("pago", $("#pedPago").value);
     if ($("#pedTipo").value) params.set("tipo", $("#pedTipo").value);
@@ -665,6 +667,16 @@
       : `<span>${d.total} pedido${d.total === 1 ? "" : "s"}</span>`;
   }
   ["#pedEstado", "#pedPago", "#pedTipo"].forEach((s) => ($(s).onchange = () => { pagina = 1; accion(null, cargarPedidos); }));
+  $("#pedBuscar").onclick = (e) => { pagina = 1; accion(e.currentTarget, cargarPedidos); };
+  $("#pedBuscarId").onkeydown = (e) => {
+    if (e.key === "Enter") { e.preventDefault(); $("#pedBuscar").click(); }
+  };
+  $("#pedLimpiar").onclick = (e) => {
+    $("#pedBuscarId").value = "";
+    pagina = 1;
+    accion(e.currentTarget, cargarPedidos);
+    $("#pedBuscarId").focus();
+  };
   $("#pedActualizar").onclick = (e) => accion(e.currentTarget, cargarPedidos);
   $("#pedPaginacion").onclick = (e) => {
     const b = e.target.closest("[data-pag]");

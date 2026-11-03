@@ -63,7 +63,8 @@
     if (!cuentaWrap.contains(e.target)) cerrarMenu(false);
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu.classList.contains("is-open")) cerrarMenu(true);
+    if (e.key === "Escape" && menu.classList.contains("is-open"))
+      cerrarMenu(true);
   });
 
   const dialog = document.createElement("dialog");
@@ -153,7 +154,11 @@
   function actualizarPausa() {
     const segundos = Math.max(0, Math.ceil((pausaHasta - Date.now()) / 1000));
     enviar.disabled = procesando || segundos > 0;
-    enviar.textContent = segundos ? `Reintentar en ${segundos}s` : (procesando ? "Ingresando…" : "Ingresar");
+    enviar.textContent = segundos
+      ? `Reintentar en ${segundos}s`
+      : procesando
+        ? "Ingresando…"
+        : "Ingresar";
     if (!segundos) {
       clearInterval(temporizador);
       if (pausaHasta) mensaje.textContent = "Ya podés volver a intentar.";
@@ -162,10 +167,27 @@
   }
   let overflowAnterior = "";
 
-  function mostrarUsuario(usuario) {
+  function mostrarUsuario(usuario, inicial = false) {
     usuarioActual = usuario;
+    // Mostrar el acceso a pedidos únicamente con sesión.
+    const enlacePedidos = document.getElementById("tab-pedidos");
+    if (enlacePedidos) {
+      enlacePedidos.style.display = usuario ? "" : "none";
+    }
+
+    // Sin sesión, salir de la sección de pedidos.
+    if (
+      !inicial && !usuario &&
+      document.getElementById("pedidos")?.classList.contains("is-active")
+    ) {
+      activateTab("inicio");
+    }
     acciones.classList.toggle("is-logueado", Boolean(usuario));
-    cuentaNombre.textContent = usuario ? `Hola, ${nombreDePila(usuario)}` : "";
+    const tipos = { minorista: 'Minorista', mayorista: 'Mayorista', distribuidor: 'Distribuidor' };
+    const etiqueta = usuario?.rol === 'admin' ? 'Administrador' : tipos[usuario?.tipoCliente] || 'Completar perfil';
+    cuentaNombre.textContent = usuario ? `Hola, ${nombreDePila(usuario)} · ${etiqueta}` : '';
+    cuenta.title = cuentaNombre.textContent;
+    window.actualizarPerfilComercial?.(usuario);
     cuentaWrap.style.display = usuario ? "" : "none";
     if (!usuario) cerrarMenu(false);
     ingresar.style.display = usuario ? "none" : "";
@@ -205,12 +227,14 @@
   // "¿No tenés cuenta? Registrarme": cierra el login y abre el registro.
   // El scroll se restablece en el momento (sin esperar al evento "close") para que el
   // registro guarde el estado correcto y no quede la página bloqueada al cerrarlo.
-  dialog.querySelector("[data-abrir-registro]").addEventListener("click", (e) => {
-    e.preventDefault();
-    dialog.close();
-    document.body.style.overflow = overflowAnterior;
-    if (typeof window.abrirRegistro === "function") window.abrirRegistro();
-  });
+  dialog
+    .querySelector("[data-abrir-registro]")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      dialog.close();
+      document.body.style.overflow = overflowAnterior;
+      if (typeof window.abrirRegistro === "function") window.abrirRegistro();
+    });
 
   // La tienda lo usa cuando alguien sin sesión toca el carrito, "Agregar" o "Mis pedidos".
   window.abrirInicioSesion = abrirLogin;
@@ -331,6 +355,6 @@
     }
   }
 
-  mostrarUsuario(null);
+  mostrarUsuario(null, true);
   recuperarSesion();
 })();

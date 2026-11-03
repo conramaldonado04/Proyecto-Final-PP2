@@ -258,12 +258,26 @@
 }
 /* Orden de la barra superior: el nombre y el carrito quedan juntos, a la
    derecha de todo (carrito en el extremo). Sin sesión: Registrarme, Ingresar. */
-.nav__actions { gap: 10px; flex-wrap: nowrap; }
-.nav__actions .registro-abrir { order: 1; }
-.nav__actions .nav__ingresar { order: 2; }
-.nav__actions .icon-btn { order: 3; background: rgba(22, 59, 115, 0.08); }
-.nav__actions .nav__cuenta-wrap { order: 4; }
-.nav__actions .nav__burger { order: 5; }
+.nav__actions {
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+.nav__actions .registro-abrir {
+  order: 1;
+}
+.nav__actions .nav__ingresar {
+  order: 2;
+}
+.nav__actions .icon-btn {
+  order: 3;
+  background: rgba(22, 59, 115, 0.08);
+}
+.nav__actions .nav__cuenta-wrap {
+  order: 4;
+}
+.nav__actions .nav__burger {
+  order: 5;
+}
 .nav__actions.is-logueado .registro-abrir,
 .nav__actions.is-logueado .nav__ingresar {
   display: none !important;
@@ -280,10 +294,14 @@
   font-weight: 700;
   text-decoration: underline;
 }
-.login-registro a:hover { color: var(--blue-deep); }
+.login-registro a:hover {
+  color: var(--blue-deep);
+}
 
 /* Menú de cuenta: "Hola, Nombre ▾" con Mis pedidos / Panel / Cerrar sesión */
-.nav__cuenta-wrap { position: relative; }
+.nav__cuenta-wrap {
+  position: relative;
+}
 .nav__cuenta {
   display: flex;
   align-items: center;
@@ -308,7 +326,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.nav__cuenta-flecha { font-size: 12px; }
+.nav__cuenta-flecha {
+  font-size: 12px;
+}
 .nav__menu {
   display: none;
   position: absolute;
@@ -323,7 +343,9 @@
   box-shadow: 0 10px 28px rgba(18, 50, 92, 0.18);
   z-index: 60;
 }
-.nav__menu.is-open { display: flex; }
+.nav__menu.is-open {
+  display: flex;
+}
 .nav__item {
   display: block;
   width: 100%;
@@ -337,14 +359,20 @@
   text-align: left;
   cursor: pointer;
 }
-.nav__item[hidden] { display: none; }
+.nav__item[hidden] {
+  display: none;
+}
 .nav__item:hover,
 .nav__item:focus-visible {
   background: var(--cream);
   color: var(--blue-deep);
 }
-.nav__pedidos { order: 1; }
-.nav__admin { order: 2; }
+.nav__pedidos {
+  order: 1;
+}
+.nav__admin {
+  order: 2;
+}
 .nav__salir {
   order: 3;
   margin-top: 6px;
@@ -353,7 +381,9 @@
   color: #b3261e;
 }
 @media (max-width: 600px) {
-  .nav__cuenta-nombre { max-width: 90px; }
+  .nav__cuenta-nombre {
+    max-width: 90px;
+  }
 }
 .tienda-dialog button:disabled,
 .tienda-card button:disabled {
@@ -418,85 +448,1138 @@
   touch-action: none;
   cursor: grab;
 }
-.producto-3d canvas.arrastrando { cursor: grabbing; }
-.producto-3d canvas:focus-visible { outline: 3px solid #1661a0; outline-offset: -5px; }
-.producto-3d-status, .producto-3d-error { position: absolute; inset: 45% 20px auto; text-align: center; font-size: 1rem; pointer-events: none; }
-.producto-3d-status:empty { display: none; }
-.producto-3d-controles { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
-.producto-3d-controles button { width: 44px; height: 44px; border: 1px solid #d2d5db; border-radius: 50%; background: #fff; color: #25324a; font: 600 1.3rem/1 system-ui; cursor: pointer; box-shadow: 0 3px 10px #17233c12; }
-.producto-3d-controles button:hover { background: #f0f3f7; }
-.producto-3d-controles button:focus-visible { outline: 3px solid #1661a0; outline-offset: 2px; }
-.tienda-botella { display: grid; grid-template-columns: minmax(240px, 380px) 1fr; align-items: center; gap: 32px; border: 1px solid #e4e7ea; padding: 18px; border-radius: 20px; margin: 24px 0; background: #fff; }
-.tienda-botella-texto { padding: 12px; }
-.tienda-botella-texto h3 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin: 8px 0 16px; }
-.tienda-botella-texto p { line-height: 1.6; }
-.tienda-botella-nota { color: #606975; font-size: .9rem; max-width: 34ch; }
+.producto-3d canvas.arrastrando {
+  cursor: grabbing;
+}
+.producto-3d canvas:focus-visible {
+  outline: 3px solid #1661a0;
+  outline-offset: -5px;
+}
+.producto-3d-status,
+.producto-3d-error {
+  position: absolute;
+  inset: 45% 20px auto;
+  text-align: center;
+  font-size: 1rem;
+  pointer-events: none;
+}
+.producto-3d-status:empty {
+  display: none;
+}
+.producto-3d-controles {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+.producto-3d-controles button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d2d5db;
+  border-radius: 50%;
+  background: #fff;
+  color: #25324a;
+  font: 600 1.3rem/1 system-ui;
+  cursor: pointer;
+  box-shadow: 0 3px 10px #17233c12;
+}
+.producto-3d-controles button:hover {
+  background: #f0f3f7;
+}
+.producto-3d-controles button:focus-visible {
+  outline: 3px solid #1661a0;
+  outline-offset: 2px;
+}
+.tienda-botella {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) 1fr;
+  align-items: center;
+  gap: 32px;
+  border: 1px solid #e4e7ea;
+  padding: 18px;
+  border-radius: 20px;
+  margin: 24px 0;
+  background: #fff;
+}
+.tienda-botella-texto {
+  padding: 12px;
+}
+.tienda-botella-texto h3 {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  margin: 8px 0 16px;
+}
+.tienda-botella-texto p {
+  line-height: 1.6;
+}
+.tienda-botella-nota {
+  color: #606975;
+  font-size: 0.9rem;
+  max-width: 34ch;
+}
 
 /* El catálogo comparte una sola columna de contenido. Estas reglas no
    alteran la página independiente de revisión de botellas. */
-#productos .tienda-layout { width: 100%; max-width: 1160px; margin: 0 auto; }
-#productos .tienda-cabecera { margin-bottom: 24px; }
-#productos .tienda-cabecera p { line-height: 1.5; }
+#productos .tienda-layout {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+#productos .tienda-cabecera {
+  margin-bottom: 24px;
+}
+#productos .tienda-cabecera p {
+  line-height: 1.5;
+}
 #productos .tienda-botella {
-  grid-template-columns: minmax(240px, .85fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.15fr);
   gap: clamp(24px, 4vw, 56px);
   margin: 0 0 36px;
   padding: 20px;
   border-radius: 24px;
   background: linear-gradient(110deg, #fff9ec, #fff 65%);
 }
-#productos .tienda-botella .producto-3d { height: 350px; background: radial-gradient(ellipse at center, #fff, #f4f0e5); }
-#productos .tienda-botella-texto { padding: 12px 24px 12px 0; min-width: 0; }
-#productos .tienda-botella-texto .eyebrow { font-size: 12px; letter-spacing: .1em; margin: 0 0 8px; }
-#productos .tienda-botella-texto h3 { font-size: clamp(24px, 2.5vw, 32px); line-height: 1.2; color: #122d52; margin: 0 0 20px; }
-#productos .tienda-botella-texto p:not(.eyebrow) { font-size: 15px; line-height: 1.6; color: #526176; margin: 14px 0 0; max-width: 44ch; }
-#productos .tienda-selector-sabor { display: grid; gap: 7px; font-size: 14px; font-weight: 600; color: #122d52; max-width: 300px; }
-#productos .tienda-selector-sabor select { width: 100%; min-height: 46px; padding: 10px 14px; border: 1px solid #bdc8d5; border-radius: 10px; background: white; color: #122d52; font: inherit; cursor: pointer; }
-#productos .tienda-ampliar { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; color: #164b81; padding: 8px 0; text-decoration: underline; text-underline-offset: 4px; }
-#productos .tienda-catalogo-titulo h3 { color: #122d52; font-size: 25px; line-height: 1.3; margin: 0 0 6px; }
-#productos .tienda-catalogo-titulo p { color: #526176; font-size: 15px; margin: 0; }
-#productos .tienda-nota { font-size: 13px; margin: 12px 0 20px; max-width: none; }
-#productos .tienda-filtros { padding: 18px; border: 1px solid #e1e6ed; background: #f7f9fb; border-radius: 16px; }
-#productos .tienda-filtros label { font-size: 14px; font-weight: 600; min-width: 0; }
-#productos .tienda-filtros input, #productos .tienda-filtros select { font-weight: 400; }
-#productos .tienda-filtros .btn { min-height: 44px; }
-#productos .tienda-card { padding: 20px; gap: 10px; border-radius: 16px; min-width: 0; }
-#productos .tienda-card h3 { font-size: 22px; line-height: 1.25; overflow-wrap: anywhere; }
-#productos .tienda-card-marca img { width: 48px; height: 48px; }
-#productos .tienda-card-marca span { font-size: 12px; }
-#productos .tienda-card .btn { width: 100%; text-align: center; }
-#productos .tienda-layout :is(select, input, a):focus-visible { outline: 3px solid #226bad; outline-offset: 3px; }
+#productos .tienda-botella .producto-3d {
+  height: 350px;
+  background: radial-gradient(ellipse at center, #fff, #f4f0e5);
+}
+#productos .tienda-botella-texto {
+  padding: 12px 24px 12px 0;
+  min-width: 0;
+}
+#productos .tienda-botella-texto .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px;
+}
+#productos .tienda-botella-texto h3 {
+  font-size: clamp(24px, 2.5vw, 32px);
+  line-height: 1.2;
+  color: #122d52;
+  margin: 0 0 20px;
+}
+#productos .tienda-botella-texto p:not(.eyebrow) {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #526176;
+  margin: 14px 0 0;
+  max-width: 44ch;
+}
+#productos .tienda-selector-sabor {
+  display: grid;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #122d52;
+  max-width: 300px;
+}
+#productos .tienda-selector-sabor select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1px solid #bdc8d5;
+  border-radius: 10px;
+  background: white;
+  color: #122d52;
+  font: inherit;
+  cursor: pointer;
+}
+#productos .tienda-ampliar {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  color: #164b81;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+#productos .tienda-catalogo-titulo h3 {
+  color: #122d52;
+  font-size: 25px;
+  line-height: 1.3;
+  margin: 0 0 6px;
+}
+#productos .tienda-catalogo-titulo p {
+  color: #526176;
+  font-size: 15px;
+  margin: 0;
+}
+#productos .tienda-nota {
+  font-size: 13px;
+  margin: 12px 0 20px;
+  max-width: none;
+}
+#productos .tienda-filtros {
+  padding: 18px;
+  border: 1px solid #e1e6ed;
+  background: #f7f9fb;
+  border-radius: 16px;
+}
+#productos .tienda-filtros label {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 0;
+}
+#productos .tienda-filtros input,
+#productos .tienda-filtros select {
+  font-weight: 400;
+}
+#productos .tienda-filtros .btn {
+  min-height: 44px;
+}
+#productos .tienda-card {
+  padding: 20px;
+  gap: 10px;
+  border-radius: 16px;
+  min-width: 0;
+}
+#productos .tienda-card h3 {
+  font-size: 22px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+#productos .tienda-card-marca img {
+  width: 48px;
+  height: 48px;
+}
+#productos .tienda-card-marca span {
+  font-size: 12px;
+}
+#productos .tienda-card .btn {
+  width: 100%;
+  text-align: center;
+}
+#productos .tienda-layout :is(select, input, a):focus-visible {
+  outline: 3px solid #226bad;
+  outline-offset: 3px;
+}
 @media (max-width: 700px) {
-  #productos .tienda-botella { grid-template-columns: 1fr; gap: 8px; padding: 14px; }
-  #productos .tienda-botella .producto-3d { height: 320px; }
-  #productos .tienda-botella-texto { padding: 16px 8px; }
-  #productos .tienda-selector-sabor { max-width: none; }
-  #productos .tienda-cabecera { gap: 12px; }
-  #productos .tienda-filtros { padding: 14px; }
+  #productos .tienda-botella {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 14px;
+  }
+  #productos .tienda-botella .producto-3d {
+    height: 320px;
+  }
+  #productos .tienda-botella-texto {
+    padding: 16px 8px;
+  }
+  #productos .tienda-selector-sabor {
+    max-width: none;
+  }
+  #productos .tienda-cabecera {
+    gap: 12px;
+  }
+  #productos .tienda-filtros {
+    padding: 14px;
+  }
 }
 @media (max-width: 600px) {
-  .tienda-botella { grid-template-columns: 1fr; gap: 2px; padding: 10px; }
-  .producto-3d { height: 400px; }
+  .tienda-botella {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding: 10px;
+  }
+  .producto-3d {
+    height: 400px;
+  }
 }
 
 /* Botella interactiva dentro de cada tarjeta de compra. */
-#productos .tienda-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-#productos .tienda-card-botella { padding: 20px; }
-#productos .tienda-card-botella .producto-3d { height: 360px; flex: none; }
-#productos .tienda-card-botella .tienda-card-ayuda { font-size: 12px; text-align: center; color: #617086; margin: 0 0 8px; }
-#productos .tienda-card-botella .tienda-card-descripcion { font-size: 15px; line-height: 1.6; color: #526176; }
-#productos .tienda-card-botella .tienda-precio { margin-top: 6px; }
-#productos .tienda-card-botella .tienda-card-marca span { background: #fff3d8; color: #795005; padding: 6px 10px; border-radius: 8px; }
+#productos .tienda-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+#productos .tienda-card-botella {
+  padding: 20px;
+}
+#productos .tienda-card-botella .producto-3d {
+  height: 360px;
+  flex: none;
+}
+#productos .tienda-card-botella .tienda-card-ayuda {
+  font-size: 12px;
+  text-align: center;
+  color: #617086;
+  margin: 0 0 8px;
+}
+#productos .tienda-card-botella .tienda-card-descripcion {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #526176;
+}
+#productos .tienda-card-botella .tienda-precio {
+  margin-top: 6px;
+}
+#productos .tienda-card-botella .tienda-card-marca span {
+  background: #fff3d8;
+  color: #795005;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
 @media (max-width: 650px) {
-  #productos .tienda-grid { grid-template-columns: 1fr; }
-  #productos .tienda-card-botella .producto-3d { height: 330px; }
+  #productos .tienda-grid {
+    grid-template-columns: 1fr;
+  }
+  #productos .tienda-card-botella .producto-3d {
+    height: 330px;
+  }
 }
 
 /* Productos cargados desde el panel de administración (con foto en vez de botella 3D) */
-#productos .tienda-card-foto .tienda-foto { width: 100%; height: 360px; object-fit: cover; border-radius: 12px; background: #fff6e9; }
-#productos .tienda-card-foto .tienda-card-descripcion { font-size: 15px; line-height: 1.6; color: #526176; }
-#productos .tienda-card-foto .tienda-card-marca span { background: #fff3d8; color: #795005; padding: 6px 10px; border-radius: 8px; }
-#productos .tienda-pocos { display: inline-block; background: #fde8e6; color: #9b1f18; padding: 3px 10px; border-radius: 999px; font-weight: 700; }
+#productos .tienda-card-foto .tienda-foto {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #fff6e9;
+}
+#productos .tienda-card-foto .tienda-card-descripcion {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #526176;
+}
+#productos .tienda-card-foto .tienda-card-marca span {
+  background: #fff3d8;
+  color: #795005;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+#productos .tienda-pocos {
+  display: inline-block;
+  background: #fde8e6;
+  color: #9b1f18;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
 @media (max-width: 700px) {
-  #productos .tienda-card-foto .tienda-foto { height: 300px; }
+  #productos .tienda-card-foto .tienda-foto {
+    height: 300px;
+  }
+}
+
+.mis-pedidos {
+  background: #f5f7fb;
+}
+
+.mis-pedidos__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+  min-height: 55vh;
+}
+
+.mis-pedidos__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.mis-pedidos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+}
+
+.mis-pedidos__lista .tienda-pedido,
+.mis-pedidos__vacio {
+  padding: 28px;
+  border: 1px solid #dce3ef;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.mis-pedidos__lista .tienda-pedido ul {
+  padding-left: 20px;
+  margin: 16px 0;
+}
+
+.mis-pedidos__vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.mis-pedidos__vacio p {
+  margin: 12px 0 24px;
+}
+
+/* Mis pedidos · colores Naranpol */
+.mis-pedidos {
+  background:
+    radial-gradient(circle at 95% 5%, #ffc14d55, transparent 35%),
+    radial-gradient(circle at 0% 90%, #ff9d2530, transparent 40%), #fff5e5;
+  color: #163b73;
+}
+
+.mis-pedidos__inner {
+  padding-top: 48px;
+  padding-bottom: 72px;
+  min-height: 65vh;
+}
+
+.mis-pedidos__cabecera {
+  background: #fffaf1;
+  border: 1px solid #f3d6a4;
+  border-left: 6px solid #f5a100;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 8px 24px #8a54000a;
+}
+
+.mis-pedidos__cabecera h1 {
+  color: #163b73;
+  font-size: clamp(28px, 4vw, 38px);
+  margin-bottom: 8px;
+}
+
+.mis-pedidos__cabecera .eyebrow {
+  color: #a85d00;
+}
+
+.mis-pedidos__cabecera > div > p:last-child {
+  color: #52657e;
+}
+
+.mis-pedidos__estado:not(:empty) {
+  margin: 20px 0;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: #fffaf1;
+}
+
+.mis-pedidos__lista {
+  align-items: start;
+  margin-top: 24px;
+}
+
+.mis-pedidos__lista .tienda-pedido {
+  margin: 0;
+  padding: 26px;
+  background: linear-gradient(145deg, #fffdf8, #fff1d9);
+  border: 1px solid #efd3a3;
+  border-top: 5px solid #f5a100;
+  border-radius: 22px;
+  box-shadow: 0 8px 24px #7549000d;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.mis-pedidos__lista .tienda-pedido:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px #75490018;
+}
+
+.mis-pedidos__lista .tienda-pedido > strong {
+  display: block;
+  color: #163b73;
+  font-size: 19px;
+  overflow-wrap: anywhere;
+}
+
+.mis-pedidos__lista .tienda-pedido > p {
+  margin: 12px 0;
+}
+
+.mis-pedidos__lista .tienda-pedido > p:first-of-type {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.mis-pedidos__lista .tienda-pedido ul {
+  list-style: none;
+  padding: 16px 0;
+  margin: 18px 0;
+  border-top: 1px solid #e8d8bd;
+  border-bottom: 1px solid #e8d8bd;
+}
+
+.mis-pedidos__lista .tienda-pedido li {
+  padding: 6px 0;
+  line-height: 1.6;
+  color: #425571;
+}
+
+.mis-pedidos__lista .tienda-precio {
+  color: #163b73;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.mis-pedidos__lista .tienda-pedido > .btn {
+  width: 100%;
+  margin-top: 12px;
+  background: #163b73;
+  border: 2px solid #163b73;
+  color: #fff;
+}
+
+.mis-pedidos__lista .tienda-pedido > .btn:hover {
+  background: #214f91;
+  border-color: #214f91;
+}
+
+/* Estados: texto + color */
+.pedido-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.pedido-estado::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Pendiente de pago: naranja */
+.pedido-estado[data-estado="pendiente_pago"] {
+  color: #934100;
+  background: #ffead4;
+  border-color: #efbd89;
+}
+
+/* Preparando / pendiente de entrega: amarillo */
+.pedido-estado[data-estado="preparando"] {
+  color: #735500;
+  background: #fff1b8;
+  border-color: #e2c85a;
+}
+
+/* En camino: azul */
+.pedido-estado[data-estado="enviado"] {
+  color: #174b96;
+  background: #e1edff;
+  border-color: #a5c3ee;
+}
+
+/* Entregado: verde */
+.pedido-estado[data-estado="entregado"] {
+  color: #17603a;
+  background: #dcf5e5;
+  border-color: #99d6b1;
+}
+
+/* Cancelado: rojo */
+.pedido-estado[data-estado="cancelado"] {
+  color: #a12626;
+  background: #ffe3e3;
+  border-color: #eca7a7;
+}
+
+.mis-pedidos__vacio {
+  padding: 56px 24px;
+  background: linear-gradient(135deg, #fffaf1, #ffe7b8);
+  border: 2px dashed #e6b761;
+  border-radius: 24px;
+}
+
+.mis-pedidos__vacio h2 {
+  color: #163b73;
+}
+
+.mis-pedidos__vacio .btn {
+  background: #f5a100;
+  border: 2px solid #f5a100;
+  color: #163b73;
+  font-weight: 800;
+}
+
+.mis-pedidos .btn:focus-visible {
+  outline: 3px solid #163b73;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .mis-pedidos__inner {
+    padding: 24px 16px 40px;
+  }
+
+  .mis-pedidos__cabecera {
+    padding: 22px;
+  }
+
+  #pedidosActualizar {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mis-pedidos__lista .tienda-pedido {
+    transition: none;
+  }
+
+  .mis-pedidos__lista .tienda-pedido:hover {
+    transform: none;
+  }
+}
+
+/* Mis pedidos · azul y naranja Naranpol */
+.mis-pedidos {
+  background:
+    radial-gradient(ellipse at top right, #2866af66, transparent 55%),
+    linear-gradient(145deg, #102b55, #173f79);
+  color: #fff;
+}
+
+.mis-pedidos__cabecera {
+  background: linear-gradient(120deg, #ffb51b, #f59a00);
+  border: 1px solid #ffc759;
+  border-left: 6px solid #ffd678;
+  box-shadow: 0 12px 30px #06172e33;
+}
+
+.mis-pedidos__cabecera h1,
+.mis-pedidos__cabecera .eyebrow,
+.mis-pedidos__cabecera > div > p:last-child {
+  color: #102f60;
+}
+
+#pedidosActualizar {
+  background: #15396e;
+  border-color: #15396e;
+  color: #fff;
+}
+
+#pedidosActualizar:hover {
+  background: #0c2851;
+  border-color: #0c2851;
+}
+
+.mis-pedidos__lista .tienda-pedido {
+  background: linear-gradient(145deg, #204e89, #183c70);
+  border: 1px solid #ffffff26;
+  border-top: 5px solid #ffad0a;
+  box-shadow: 0 10px 28px #06172e33;
+  color: #eef5ff;
+}
+
+.mis-pedidos__lista .tienda-pedido:hover {
+  box-shadow: 0 16px 32px #06172e55;
+}
+
+.mis-pedidos__lista .tienda-pedido > strong {
+  color: #fff;
+}
+
+.mis-pedidos__lista .tienda-pedido > p:first-of-type {
+  color: #c0d4ee;
+}
+
+.mis-pedidos__lista .tienda-pedido ul {
+  border-color: #ffffff26;
+}
+
+.mis-pedidos__lista .tienda-pedido li {
+  color: #e0ebfa;
+}
+
+.mis-pedidos__lista .tienda-precio {
+  color: #ffbd38;
+}
+
+.mis-pedidos__lista .tienda-pedido > .btn {
+  background: #ffad0a;
+  border-color: #ffad0a;
+  color: #102f60;
+  font-weight: 800;
+}
+
+.mis-pedidos__lista .tienda-pedido > .btn:hover {
+  background: #ffc247;
+  border-color: #ffc247;
+}
+
+.mis-pedidos__vacio {
+  background: #1d477e;
+  border-color: #ffb321;
+  color: #e0ebfa;
+}
+
+.mis-pedidos__vacio h2 {
+  color: #fff;
+}
+
+.mis-pedidos__estado:not(:empty) {
+  background: #204b82;
+  color: #fff;
+  border: 1px solid #ffffff26;
+}
+
+.mis-pedidos .btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+.mis-pedidos .btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+/* Azul más claro */
+.mis-pedidos {
+  background: linear-gradient(135deg, #285b96, #3976b7);
+}
+
+.mis-pedidos__lista .tienda-pedido {
+  background: linear-gradient(145deg, #3269a5, #285a91);
+}
+
+.mis-pedidos__lista .tienda-pedido > p:first-of-type,
+.mis-pedidos__lista .tienda-pedido li {
+  color: #edf5ff;
+}
+
+.mis-pedidos__vacio,
+.mis-pedidos__estado:not(:empty) {
+  background: #2e629d;
+}
+/* Productos · azul y naranja Naranpol */
+#productos {
+  background: linear-gradient(135deg, #285b96, #3976b7);
+  color: #fff;
+}
+
+#productos .tienda-cabecera {
+  padding: 28px;
+  border: 1px solid #ffc759;
+  border-left: 6px solid #ffd678;
+  border-radius: 22px;
+  background: linear-gradient(120deg, #ffb51b, #f59a00);
+  box-shadow: 0 12px 30px #06172e26;
+  color: #102f60;
+  gap: 20px;
+}
+
+#productos .tienda-cabecera .section-title,
+#productos .tienda-cabecera .eyebrow,
+#productos .tienda-cabecera p {
+  color: #102f60;
+}
+
+#productos .tienda-etiqueta {
+  background: #15396e;
+  border-color: #15396e;
+  color: #fff;
+}
+
+#productos .tienda-nota {
+  color: #edf5ff;
+  line-height: 1.7;
+}
+
+#productos .tienda-filtros {
+  background: #285a91;
+  border: 1px solid #ffffff30;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px #06172e14;
+}
+
+#productos .tienda-filtros label {
+  color: #fff;
+  font-weight: 700;
+}
+
+#productos .tienda-filtros input,
+#productos .tienda-filtros select {
+  background: #f5f9ff;
+  color: #15396e;
+  border: 1px solid #c4d7ee;
+}
+
+#productos .tienda-filtros input::placeholder {
+  color: #586f8e;
+}
+
+#productos #tiendaActualizar {
+  background: #ffad0a;
+  border: 2px solid #ffad0a;
+  color: #102f60;
+  font-weight: 800;
+}
+
+#productos #tiendaActualizar:hover {
+  background: #ffc247;
+  border-color: #ffc247;
+}
+
+#productos .tienda-card {
+  background: linear-gradient(145deg, #3269a5, #285a91);
+  border: 1px solid #ffffff30;
+  border-top: 5px solid #ffad0a;
+  border-radius: 22px;
+  box-shadow: 0 10px 28px #06172e26;
+  color: #fff;
+}
+
+#productos .tienda-card h3 {
+  color: #fff;
+}
+
+#productos .tienda-card-descripcion,
+#productos .tienda-card-ayuda,
+#productos .tienda-stock,
+#productos .tienda-card small {
+  color: #edf5ff;
+}
+
+#productos .tienda-card-marca,
+#productos .tienda-card-marca span {
+  color: #ffd16a;
+}
+
+#productos .tienda-precio {
+  color: #ffcf70;
+}
+
+#productos .tienda-pocos {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: #fff0bd;
+  color: #735000;
+  font-weight: 800;
+}
+
+#productos .tienda-card .btn--primary {
+  background: #ffad0a;
+  border: 2px solid #ffad0a;
+  color: #102f60;
+  font-weight: 800;
+}
+
+#productos .tienda-card .btn--primary:hover:not(:disabled) {
+  background: #ffc247;
+  border-color: #ffc247;
+}
+
+#productos .tienda-card .btn--primary:disabled {
+  background: #d0dae7;
+  border-color: #d0dae7;
+  color: #415572;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+#productos #tiendaEstado {
+  color: #fff;
+}
+
+#productos input:focus-visible,
+#productos select:focus-visible,
+#productos button:focus-visible {
+  outline: 3px solid #ffcf70;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  #productos .tienda-cabecera {
+    padding: 22px;
+    flex-wrap: wrap;
+  }
+}
+/* Para tu negocio · Naranpol */
+#publico {
+  background: linear-gradient(135deg, #285b96, #3976b7);
+  color: #fff;
+}
+
+#publico > .eyebrow {
+  color: #ffd16a;
+}
+
+#publico > .section-title {
+  color: #fff;
+}
+
+#publico .card-publico {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, #3269a5, #285a91);
+  border: 1px solid #ffffff30;
+  border-top: 6px solid #ffad0a;
+  box-shadow: 0 12px 30px #06172e26;
+  color: #fff;
+}
+
+#publico .card-publico h3 {
+  color: #fff;
+}
+
+#publico .card-publico p {
+  color: #edf5ff;
+}
+
+#publico .card-publico__tag {
+  color: #ffd16a;
+}
+
+#publico .card-publico__icon {
+  background: #ffffff1f;
+}
+
+#publico .card-publico .link-cta {
+  align-self: flex-start;
+  margin-top: auto;
+  background: #ffad0a;
+  color: #102f60;
+  border: 2px solid #ffad0a;
+}
+
+#publico .card-publico .link-cta:hover {
+  background: #ffc247;
+  border-color: #ffc247;
+}
+
+/* Distribuidores: naranja para destacar */
+#publico .card-publico--distribuidor {
+  background: linear-gradient(135deg, #ffbd35, #ffa600);
+  border-color: #ffc759;
+  border-top-color: #15396e;
+  color: #102f60;
+}
+
+#publico .card-publico--distribuidor h3,
+#publico .card-publico--distribuidor p,
+#publico .card-publico--distribuidor .card-publico__tag {
+  color: #102f60;
+}
+
+#publico .card-publico--distribuidor .card-publico__icon {
+  background: #ffffff55;
+}
+
+#publico .card-publico--distribuidor .link-cta {
+  background: #15396e;
+  border-color: #15396e;
+  color: #fff;
+}
+
+#publico .card-publico--distribuidor .link-cta:hover {
+  background: #0c2851;
+  border-color: #0c2851;
+}
+
+#publico .link-cta:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 5px;
+}
+
+#publico .card-publico--distribuidor .link-cta:focus-visible {
+  outline-color: #102f60;
+}
+/* Aviso temporal: no ocupa lugar cuando está vacío */
+.tienda-aviso:empty {
+  display: none;
+}
+
+.tienda-aviso:not(:empty) {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  margin: 0;
+  padding: 16px 24px;
+  border: 1px solid #ffc759;
+  border-radius: 18px;
+  background: #ffb51b;
+  color: #102f60;
+  font-weight: 800;
+  text-align: center;
+  box-shadow: 0 10px 32px #102f6040;
+  pointer-events: none;
+  animation: aviso-carrito-entrada 180ms ease-out;
+}
+
+/* Reacción del carrito */
+.carrito-agregado {
+  animation: carrito-reaccion 650ms ease;
+}
+
+.nav__actions .tienda-contador {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #ffad0a;
+  color: #102f60;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+#productos .tienda-card .btn.producto-agregado {
+  background: #dcf5e5;
+  border-color: #99d6b1;
+  color: #17603a;
+}
+
+@keyframes carrito-reaccion {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.18) rotate(-8deg);
+    background: #ffb51b;
+  }
+  65% {
+    transform: scale(1.08) rotate(6deg);
+  }
+}
+
+@keyframes aviso-carrito-entrada {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carrito-agregado,
+  .tienda-aviso:not(:empty) {
+    animation: none;
+  }
+
+  .nav__actions .carrito-agregado {
+    background: #ffb51b;
+  }
+}
+/* Inicio · colores Naranpol */
+#inicio {
+  background: linear-gradient(135deg, #285b96, #3976b7);
+  color: #fff;
+}
+
+/* Historia de la fábrica */
+#inicio .historia {
+  background: transparent;
+  color: #fff;
+}
+
+#inicio .historia h2 {
+  color: #fff;
+}
+
+#inicio .historia p,
+#inicio .historia figcaption {
+  color: #edf5ff;
+}
+
+#inicio .historia .eyebrow {
+  color: #ffd16a;
+}
+
+#inicio .historia__foto,
+#inicio .historia__productos img {
+  border: 3px solid #ffb51b;
+  border-radius: 22px;
+  box-shadow: 0 12px 30px #102f6033;
+}
+
+#inicio .historia__badge {
+  background: #ffb51b;
+  color: #102f60;
+  border: 2px solid #ffd678;
+}
+
+#inicio .historia__badge strong,
+#inicio .historia__badge span {
+  color: #102f60;
+}
+
+/* Unión de la portada con el fondo azul */
+#inicio .hero__wave path {
+  fill: #285b96;
+}
+
+/* Botones de portada */
+#inicio .hero .btn--primary {
+  background: #ffad0a;
+  border: 2px solid #ffad0a;
+  color: #102f60;
+  font-weight: 800;
+}
+
+#inicio .hero .btn--primary:hover {
+  background: #ffc247;
+  border-color: #ffc247;
+}
+
+#inicio .hero .btn--outline {
+  background: #15396e;
+  border: 2px solid #fff;
+  color: #fff;
+}
+
+#inicio .hero .btn--outline:hover {
+  background: #285b96;
+}
+
+#inicio .hero .btn:focus-visible {
+  outline: 3px solid #ffd16a;
+  outline-offset: 5px;
+}
+
+/* Inicio: bloque "El sabor de siempre" */
+#inicio .historia__presente {
+  background: linear-gradient(120deg, #ffbd35, #ffa600);
+  border: 1px solid #ffc759;
+  border-top: 5px solid #15396e;
+  box-shadow: 0 12px 30px #102f6026;
+}
+
+#inicio .historia__presente h2,
+#inicio .historia__presente p,
+#inicio .historia__presente .eyebrow {
+  color: #102f60;
+}
+
+#inicio .historia__presente .eyebrow {
+  font-weight: 800;
+}
+
+#inicio .historia__productos {
+  background: #fff;
+  transform: none;
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 12px 28px #102f6026;
+}
+
+#inicio .historia__productos img {
+  border: none;
+  border-radius: 14px;
+  box-shadow: none;
+  transform: none;
+}
+
+#inicio .historia__productos figcaption {
+  color: #15396e;
+  margin-top: 12px;
+  text-align: center;
 }

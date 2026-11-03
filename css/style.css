@@ -1000,3 +1000,28 @@ img {
   .nav__links.is-open { display: flex; }
   .nav__burger { display: flex; }
 }
+
+/* Perfiles de compra: tres opciones o el perfil de la sesión. */
+#publico #canalesRegistro[hidden],
+#publico #perfilComercial[hidden],
+#publico #perfilCompletar[hidden] { display: none !important; }
+#publico #canalesRegistro > .eyebrow { color: #ffd16a; text-align: center; }
+#publico #canalesRegistro > .section-title { color: #fff; }
+#publico .publico__grid--tres { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1320px; }
+#publico .publico__grid--tres .card-publico { padding: 32px 26px; min-width: 0; gap: 18px; }
+#publico .publico__grid--tres h3 { font-size: clamp(1.6rem, 2.5vw, 2.2rem); }
+#publico .publico__grid--tres .link-cta { margin-top: auto; font-size: .95rem; }
+#publico .perfil-comercial { max-width: 1120px; margin: auto; padding: 40px; background: linear-gradient(120deg, #ffbd35, #ffa600); border-radius: 24px; border-top: 6px solid #15396e; color: #102f60; }
+#publico .perfil-comercial h2, #publico .perfil-comercial p { color: #102f60; margin-bottom: 20px; }
+.perfil-comercial__acciones { display: flex; gap: 16px; flex-wrap: wrap; }
+#publico .perfil-comercial .link-cta { background: #15396e; color: #fff; padding: 16px 24px; border-radius: 999px; }
+.nav__actions .nav__cuenta-nombre { max-width: 290px; }
+@media (max-width: 1000px) {
+  #publico .publico__grid--tres { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav__actions .nav__cuenta-nombre { max-width: 210px; }
+}
+@media (max-width: 640px) {
+  #publico .publico__grid--tres { grid-template-columns: 1fr; }
+  #publico .perfil-comercial { padding: 26px; }
+  .nav__actions .nav__cuenta-nombre { max-width: 180px; font-size: 12px; }
+}

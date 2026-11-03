@@ -113,6 +113,11 @@
       <!-- PEDIDOS -->
       <section class="adm-seccion" data-seccion="pedidos" hidden>
         <div class="adm-barra">
+          <label class="adm-campo">ID del pedido
+            <input id="pedBuscarId" type="search" placeholder="Ej.: 41D680AC" maxlength="25" aria-label="ID corto o completo del pedido">
+          </label>
+          <button class="btn btn--primary" id="pedBuscar" type="button">Buscar</button>
+          <button class="btn btn--ghost" id="pedLimpiar" type="button">Limpiar</button>
           <label class="adm-campo">Estado
             <select id="pedEstado">
               <option value="">Todos</option>

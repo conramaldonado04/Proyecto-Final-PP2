@@ -43,7 +43,7 @@
             role="tab"
             aria-selected="false"
             aria-controls="publico"
-            >Para tu negocio</a
+            >Cómo comprar</a
           >
           <a
             href="#productos"
@@ -107,7 +107,7 @@
             type="button"
             data-goto-tab="publico"
           >
-            Quiero ser cliente mayorista
+            Elegí tu forma de comprar
           </button>
           <button
             class="btn btn--outline"
@@ -182,37 +182,41 @@
       aria-labelledby="publico"
       tabindex="0"
     >
-      <p class="eyebrow eyebrow--center">¿Cómo querés comprar?</p>
-      <h2 class="section-title section-title--center">
-        Dos formas de hacer crecer tu negocio
-      </h2>
-
-      <div class="publico__grid">
-        <article class="card-publico">
-          <div class="card-publico__icon" aria-hidden="true">🏪</div>
-          <span class="card-publico__tag">Compra directa</span>
-          <h3>Venta Mayorista</h3>
-          <p>
-            Kioscos, almacenes y despensas: precios por volumen, catálogo
-            siempre actualizado y stock al día.
-          </p>
-          <button class="link-cta" type="button">Quiero ser mayorista →</button>
-        </article>
-
-        <article class="card-publico card-publico--distribuidor">
-          <div class="card-publico__icon" aria-hidden="true">🚛</div>
-          <span class="card-publico__tag card-publico__tag--contact"
-            >A medida</span
-          >
-          <h3>Venta a Distribuidores</h3>
-          <p>
-            ¿Manejás grandes volúmenes o una zona de reparto? Contanos tu
-            operación y un asesor arma la propuesta con vos.
-          </p>
-          <button class="link-cta" type="button" data-open-modal="distribuidor">
-            Solicitar contacto →
-          </button>
-        </article>
+      <div id="canalesRegistro">
+        <p class="eyebrow eyebrow--center">Elegí cómo querés comprar</p>
+        <h2 class="section-title section-title--center">Una cuenta para tu forma de comprar</h2>
+        <div class="publico__grid publico__grid--tres">
+          <article class="card-publico">
+            <div class="card-publico__icon" aria-hidden="true">🛒</div>
+            <span class="card-publico__tag">Para tu casa</span>
+            <h3>Minorista</h3>
+            <p>Comprá desde 1 pack de 6 botellas por pedido. Elegí tu sabor favorito.</p>
+            <button class="link-cta" type="button" data-registro-tipo="minorista">Crear cuenta minorista →</button>
+          </article>
+          <article class="card-publico">
+            <div class="card-publico__icon" aria-hidden="true">🏪</div>
+            <span class="card-publico__tag">Para tu negocio</span>
+            <h3>Mayorista</h3>
+            <p>Registrá tu kiosco, almacén o comercio y gestioná sus compras desde tu cuenta.</p>
+            <button class="link-cta" type="button" data-registro-tipo="mayorista">Registrar mi negocio →</button>
+          </article>
+          <article class="card-publico card-publico--distribuidor">
+            <div class="card-publico__icon" aria-hidden="true">🚛</div>
+            <span class="card-publico__tag">Para tu distribución</span>
+            <h3>Distribuidor</h3>
+            <p>Contanos tu zona de reparto y volumen mensual para registrar tu perfil comercial.</p>
+            <button class="link-cta" type="button" data-registro-tipo="distribuidor">Crear cuenta distribuidor →</button>
+          </article>
+        </div>
+      </div>
+      <div id="perfilComercial" class="perfil-comercial" hidden>
+        <p class="eyebrow">Tu cuenta · Naranpol</p>
+        <h2 id="perfilSaludo"></h2>
+        <p id="perfilDescripcion"></p>
+        <div class="perfil-comercial__acciones">
+          <button class="link-cta" type="button" id="perfilProductos">Ver productos →</button>
+          <button class="link-cta" type="button" id="perfilCompletar" hidden>Completar mi perfil →</button>
+        </div>
       </div>
     </section>
 

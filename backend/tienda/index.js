@@ -4,6 +4,7 @@ const path = require('node:path');
 const fs = require('node:fs');
 const Usuario = require('../models/Usuario');
 const datos = require('./datos');
+const { comprobarCompra } = require('../seguridad/perfil-comercial');
 const cancelarPedido = require('./cancelar');
 const { fallo, validarPedido, costoEnvio } = require('./reglas');
 const entero = { validator: Number.isSafeInteger, message: 'Debe ser un entero.' };
@@ -61,9 +62,10 @@ module.exports = async function instalarTienda(app) {
   }));
   router.use(envolver(async (req,res,next) => {
     if (!req.session?.usuarioId) return res.status(401).json({ mensaje: 'Ingresá a tu cuenta para continuar.' });
-    const usuario = await Usuario.findById(req.session.usuarioId).select('_id rol');
+    const usuario = await Usuario.findById(req.session.usuarioId).select('_id rol tipoCliente');
     if (!usuario) return res.status(401).json({ mensaje: 'La cuenta ya no está disponible.' });
     req.clienteId = usuario._id;
+    req.perfilCompra = usuario;
     req.esAdmin = usuario.rol === 'admin';
     next();
   }));
@@ -82,6 +84,7 @@ module.exports = async function instalarTienda(app) {
           resultado = previo;
           return;
         }
+        comprobarCompra(req.perfilCompra, payload);
         const items = [];
         let subtotalCentavos = 0;
         for (const item of payload.items) {
